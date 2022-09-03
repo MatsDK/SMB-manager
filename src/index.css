@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+	--color-primary-bg: 255, 255, 255;
+	--color-secondary-bg: 246, 246, 246;
+	--color-primary-text: 0, 0, 0;
+	--color-secondary-text: 100, 100, 100;
+}
+
+@layer base {
+    [data-theme="dark"] {
+        --color-primary-bg: 12, 12, 12;
+        --color-secondary-bg: 23, 23, 23;
+        --color-primary-text: 237, 237, 237;
+        --color-secondary-text: 171, 171, 171 ;
+    }
+}
