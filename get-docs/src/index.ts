@@ -95,7 +95,8 @@ const webScrapeConfDocs = async () => {
 
     await browser.close()
     writeFileSync('./parsedConfParams.json', JSON.stringify(output, null, 2))
-}
-    ; (async () => {
-        await webScrapeConfDocs()
-    })()
+};
+
+(async () => {
+    await webScrapeConfDocs()
+})()
