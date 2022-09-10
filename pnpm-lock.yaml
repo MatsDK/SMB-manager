@@ -2,10 +2,12 @@ lockfileVersion: 5.4
 
 specifiers:
   '@preact/preset-vite': ^2.3.0
+  '@tanstack/react-query': ^4.3.1
   '@tauri-apps/api': ^1.0.2
   '@tauri-apps/cli': ^1.0.4
-  '@trpc/client': 10.0.0-proxy-alpha.64
-  '@trpc/server': 10.0.0-proxy-alpha.64
+  '@trpc/client': 10.0.0-proxy-alpha.74
+  '@trpc/react': 10.0.0-proxy-alpha.74
+  '@trpc/server': 10.0.0-proxy-alpha.74
   dprint: ^0.31.1
   jotai: ^1.8.2
   postcss: ^8.4.16
@@ -18,9 +20,11 @@ specifiers:
   vite: ^3.0.0
 
 dependencies:
+  '@tanstack/react-query': 4.3.1
   '@tauri-apps/api': 1.0.2
-  '@trpc/client': 10.0.0-proxy-alpha.64_yddhvcp42la67zkiuewzi7sf4y
-  '@trpc/server': 10.0.0-proxy-alpha.64
+  '@trpc/client': 10.0.0-proxy-alpha.74_36o77syoowmrieskh7r2qg2rtm
+  '@trpc/react': 10.0.0-proxy-alpha.74_325wuojeasn2gdeuwm65lm65zm
+  '@trpc/server': 10.0.0-proxy-alpha.74
   jotai: 1.8.2
   preact: 10.10.6
   preact-router: 4.1.0_preact@10.10.6
@@ -411,6 +415,26 @@ packages:
       picomatch: 2.3.1
     dev: true
 
+  /@tanstack/query-core/4.3.1:
+    resolution: {integrity: sha512-NrtvJYVxgO2vdXyogchORW2wDh81nHjnH8n51OvaLFilC59DE8hyMzrHmKI4J0MKx8wZvROChVHHXpbBGstR8A==}
+    dev: false
+
+  /@tanstack/react-query/4.3.1:
+    resolution: {integrity: sha512-rVtXi5yRbhK9EGrlrnIsLNSW+bNpu8OuTnSjf5SNau2L6N+0UXrL911rtkIgF908zPKwaOoAqW/dM7d+ICp+Dg==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react-native: '*'
+    peerDependenciesMeta:
+      react-dom:
+        optional: true
+      react-native:
+        optional: true
+    dependencies:
+      '@tanstack/query-core': 4.3.1
+      use-sync-external-store: 1.2.0
+    dev: false
+
   /@tauri-apps/api/1.0.2:
     resolution: {integrity: sha512-yuNW0oeJ1/ZA7wNF1KgxhHrSu5viPVzY/UgUczzN5ptLM8dH15Juy5rEGkoHfeXGju90Y/l22hi3BtIrp/za+w==}
     engines: {node: '>= 12.22.0', npm: '>= 6.6.0', yarn: '>= 1.19.1'}
@@ -513,16 +537,30 @@ packages:
       '@tauri-apps/cli-win32-x64-msvc': 1.0.5
     dev: true
 
-  /@trpc/client/10.0.0-proxy-alpha.64_yddhvcp42la67zkiuewzi7sf4y:
-    resolution: {integrity: sha512-Jf5XqFAFvI55cWcloUwhbdh1nmtvldGrNHGtM1/HIsvZGZwHfMVQIQKPg457ipwZC+NUxmRoOf6HIEh9u+aNSA==}
+  /@trpc/client/10.0.0-proxy-alpha.74_36o77syoowmrieskh7r2qg2rtm:
+    resolution: {integrity: sha512-WQPkm4/srgoxS7shopV1KuyBJLoGWH2OlUI7o24SAunl0IZS6RtzxehE3BfvVxZct3fNjewP9Z9iD5iE+r1m0g==}
     peerDependencies:
-      '@trpc/server': 10.0.0-proxy-alpha.64
+      '@trpc/server': 10.0.0-proxy-alpha.74
     dependencies:
-      '@trpc/server': 10.0.0-proxy-alpha.64
+      '@trpc/server': 10.0.0-proxy-alpha.74
     dev: false
 
-  /@trpc/server/10.0.0-proxy-alpha.64:
-    resolution: {integrity: sha512-K83DY4D8CtZcfApuf8rGe/ndkceH1pLWMt775SkQagyDn6BasA/bNOpmbT3bHT2lVdNA8i53GLJszpx2NBy3Yg==}
+  /@trpc/react/10.0.0-proxy-alpha.74_325wuojeasn2gdeuwm65lm65zm:
+    resolution: {integrity: sha512-NL01eSKDLoECSOFQo9f5vRLufrbg9idfAkBkAZxA8pl6NaVRvtueiaSYwBT1lFW4Vr+0Nh3+8deQVSZiWNguag==}
+    peerDependencies:
+      '@tanstack/react-query': ^4.0.10
+      '@trpc/client': 10.0.0-proxy-alpha.74
+      '@trpc/server': 10.0.0-proxy-alpha.74
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+    dependencies:
+      '@tanstack/react-query': 4.3.1
+      '@trpc/client': 10.0.0-proxy-alpha.74_36o77syoowmrieskh7r2qg2rtm
+      '@trpc/server': 10.0.0-proxy-alpha.74
+    dev: false
+
+  /@trpc/server/10.0.0-proxy-alpha.74:
+    resolution: {integrity: sha512-l+3qT1SGKhXxH8KoCRVyvOcUswg1FsIwq4VSHL6n7o3ctVefLlGcK+QpyI7owx9vQGZJjIvp0R2LBtmGc4sbIw==}
     dev: false
 
   /acorn-node/1.8.2:
@@ -1448,6 +1486,12 @@ packages:
       escalade: 3.1.1
       picocolors: 1.0.0
     dev: true
+
+  /use-sync-external-store/1.2.0:
+    resolution: {integrity: sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dev: false
 
   /util-deprecate/1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}

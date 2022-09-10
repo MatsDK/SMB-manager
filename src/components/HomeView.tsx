@@ -1,5 +1,5 @@
 import { atom, useAtom } from 'jotai'
-import { Link, useRouter } from 'preact-router'
+import { Link } from 'preact-router'
 import { ThemeSwitcher } from './ThemeSwitcher'
 
 export const HomeView = () => {
@@ -31,7 +31,6 @@ const ConnectToServerForm = () => {
     const scrollToRecentConnections = () => {
         const el = document.querySelector('#recent')
         el?.scrollIntoView({ behavior: 'smooth' })
-        console.log(localStorage)
     }
 
     return (
