@@ -13,6 +13,7 @@ specifiers:
   superjson: ^1.9.1
   trpc-playground: ^0.3.2
   typescript: ^4.8.2
+  yaml: ^2.1.1
   zod: ^3.18.0
 
 dependencies:
@@ -21,6 +22,7 @@ dependencies:
   cors: 2.8.5
   express: 4.18.1
   superjson: 1.9.1
+  yaml: 2.1.1
   zod: 3.18.0
 
 devDependencies:
@@ -1349,6 +1351,11 @@ packages:
   /yallist/4.0.0:
     resolution: {integrity: sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==}
     dev: true
+
+  /yaml/2.1.1:
+    resolution: {integrity: sha512-o96x3OPo8GjWeSLF+wOAbrPfhFOGY0W00GNaxCDv+9hkcDJEnev1yh8S7pgHF0ik6zc8sQLuL8hjHjJULZp8bw==}
+    engines: {node: '>= 14'}
+    dev: false
 
   /zod-to-ts/0.2.2_xbm722v72w5krqreaceroado7a:
     resolution: {integrity: sha512-ardXRu0EIDcS8pP0+1jL5a4ZtPIfxhmWHjwYH7Mol38/D3OUqgo+QjK648+R6T7N0RkfSNOSI1AkddKILetLKQ==}

@@ -1,13 +1,24 @@
-import { initTRPC } from '@trpc/server'
+import { initTRPC, TRPCError } from '@trpc/server'
+import fs from "node:fs"
 import superjson from 'superjson'
-import { z } from 'zod'
+import YAML from "yaml"
 import { Context } from './context'
 
 export const t = initTRPC.context<Context>().create({ transformer: superjson })
 
+const SMB_CONF_PATH = '/etc/samba/smb.conf'
+
 export const appRouter = t.router({
     getConfig: t.procedure.query(() => {
-        return {}
+        if (!fs.existsSync(SMB_CONF_PATH)) throw new TRPCError({
+            code: "PARSE_ERROR",
+            "message": "SMB config file not found"
+        })
+
+        const rawConf = fs.readFileSync(SMB_CONF_PATH, 'utf-8')
+
+        console.log(YAML.parse(rawConf));
+        return YAML.parse(rawConf, {})
     }),
 })
 
