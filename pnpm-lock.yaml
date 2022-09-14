@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@heroicons/react': ^2.0.11
   '@preact/preset-vite': ^2.3.0
   '@tanstack/react-query': ^4.3.1
   '@tauri-apps/api': ^1.0.2
@@ -20,6 +21,7 @@ specifiers:
   vite: ^3.0.0
 
 dependencies:
+  '@heroicons/react': 2.0.11
   '@tanstack/react-query': 4.3.1
   '@tauri-apps/api': 1.0.2
   '@trpc/client': 10.0.0-proxy-alpha.74_36o77syoowmrieskh7r2qg2rtm
@@ -294,6 +296,12 @@ packages:
     requiresBuild: true
     dev: true
     optional: true
+
+  /@heroicons/react/2.0.11:
+    resolution: {integrity: sha512-bASjOgSSaYj8HqXWsOqaBiB6ZLalE/g90WYGgZ5lPm4KCCG7wPXntY4kzHf5NrLh6UBAcnPwvbiw1Ne9GYfJtw==}
+    peerDependencies:
+      react: '>= 16'
+    dev: false
 
   /@jridgewell/gen-mapping/0.1.1:
     resolution: {integrity: sha512-sQXCasFk+U8lWYEe66WxRDOE9PjVz4vSM51fTu3Hw+ClTpUSQb718772vH3pyS5pShp6lvQM7SxgIDXXXmOX7w==}

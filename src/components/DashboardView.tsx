@@ -1,9 +1,10 @@
 import { atom, useAtom } from 'jotai'
-import { useRouter } from 'preact-router'
+import { useRouter, Link } from 'preact-router'
 import { useEffect } from 'preact/hooks'
 import { trpc } from '../utils/trpc'
 import { DashboardProvider } from './DashboardProvider'
 import { ThemeSwitcher } from './ThemeSwitcher'
+import { ArrowLeftOnRectangleIcon } from "@heroicons/react/24/outline"
 
 const endPointAtom = atom('')
 
@@ -46,6 +47,12 @@ const Header = () => {
             <div className='flex'>
                 <div className='flex justify-center items-center'>
                     <span className='text-primary-text'>{endpoint}</span>
+                    <Link href='/' >
+                        <ArrowLeftOnRectangleIcon
+                            width={20}
+                            className="cursor-pointer text-secondary-text ml-3 hover:text-primary-text transition-colors"
+                        />
+                    </Link>
                 </div>
                 {/* <ThemeSwitcher /> */}
             </div>
