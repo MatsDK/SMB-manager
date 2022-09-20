@@ -1,7 +1,7 @@
 import { initTRPC, TRPCError } from '@trpc/server'
 import fs from "node:fs"
 import superjson from 'superjson'
-import YAML from "yaml"
+import ini from "ini"
 import { Context } from './context'
 
 export const t = initTRPC.context<Context>().create({ transformer: superjson })
@@ -17,8 +17,8 @@ export const appRouter = t.router({
 
         const rawConf = fs.readFileSync(SMB_CONF_PATH, 'utf-8')
 
-        console.log(YAML.parse(rawConf));
-        return YAML.parse(rawConf, {})
+        console.log(ini.parse(rawConf));
+        return ini.parse(rawConf)
     }),
 })
 

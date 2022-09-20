@@ -3,8 +3,10 @@ import { useRouter, Link } from 'preact-router'
 import { useEffect } from 'preact/hooks'
 import { trpc } from '../utils/trpc'
 import { DashboardProvider } from './DashboardProvider'
-import { ThemeSwitcher } from './ThemeSwitcher'
 import { ArrowLeftOnRectangleIcon } from "@heroicons/react/24/outline"
+import confDocs from '../../get-docs/parsedConfParams.json'
+
+const confKeys = Object.keys(confDocs)
 
 const endPointAtom = atom('')
 
@@ -32,6 +34,9 @@ const DashboardPage = () => {
         <div className='bg-primary-bg transition-colors h-screen'>
             <div className='max-w-5xl px-6 mx-auto flex flex-col overflow-auto'>
                 <Header />
+                <pre>
+                    {JSON.stringify(confKeys, null, 2)}
+                </pre>
                 <Dashboard />
             </div>
         </div>
@@ -69,7 +74,10 @@ const Dashboard = () => {
     return (
         <div className='mt-4'>
             <GlobalConfig />
-            {JSON.stringify(data)}
+            <pre>
+
+                {JSON.stringify(data, null, 2)}
+            </pre>
         </div>
     )
 }

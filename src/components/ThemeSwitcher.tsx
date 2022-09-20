@@ -1,8 +1,6 @@
 import { SunIcon, MoonIcon } from "@heroicons/react/24/outline"
 import { useEffect, useState } from "preact/hooks"
 
-
-
 export const ThemeSwitcher = () => {
     const [theme, setTheme] = useState<'light' | 'dark'>(null!)
 
@@ -14,7 +12,6 @@ export const ThemeSwitcher = () => {
     useEffect(() => {
         const html = document.querySelector('html')
 
-        console.log(html?.classList);
         if (html?.classList.contains('dark'))
             setTheme('dark')
         else setTheme('light')
