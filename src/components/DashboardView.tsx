@@ -6,7 +6,6 @@ import { DashboardProvider } from './DashboardProvider'
 import { ArrowLeftOnRectangleIcon } from "@heroicons/react/24/outline"
 import confDocs from '../../get-docs/parsedConfParams.json'
 
-const confKeys = Object.keys(confDocs)
 
 const endPointAtom = atom('')
 
@@ -34,9 +33,6 @@ const DashboardPage = () => {
         <div className='bg-primary-bg transition-colors h-screen'>
             <div className='max-w-5xl px-6 mx-auto flex flex-col overflow-auto'>
                 <Header />
-                <pre>
-                    {JSON.stringify(confKeys, null, 2)}
-                </pre>
                 <Dashboard />
             </div>
         </div>
@@ -73,19 +69,38 @@ const Dashboard = () => {
 
     return (
         <div className='mt-4'>
-            <GlobalConfig />
-            <pre>
-
-                {JSON.stringify(data, null, 2)}
-            </pre>
+            {data &&
+                <GlobalConfig data={data['global']} />
+            }
         </div>
     )
 }
 
-const GlobalConfig = () => {
+const GlobalConfig = ({ data }: { data: Record<string, string> }) => {
+
     return (
         <div className=''>
             <h2 className='text-xl font-medium'>Global Config</h2>
+            <div className="flex flex-col gap-20">
+
+                {Object.entries(data).map(([name, value]) => {
+                    if (!name) return null
+                    return (
+                        <div key={name}>
+                            <div className="flex">
+                                <span>{name}: </span>
+                                <span>{value}</span>
+                            </div>
+                            <div className="text-secondary-text">
+                                docs:
+                                <pre>
+                                    {confDocs['globalParams'][name as keyof typeof confDocs['globalParams']]?.md}
+                                </pre>
+                            </div>
+                        </div>
+                    )
+                })}
+            </div>
         </div>
     )
 }
