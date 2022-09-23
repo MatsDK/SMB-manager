@@ -1,8 +1,8 @@
 import { ArrowLeftOnRectangleIcon } from '@heroicons/react/24/outline'
 import { atom, useAtom } from 'jotai'
+import { ComponentChildren, h } from 'preact'
 import { Link, useRouter } from 'preact-router'
 import { useEffect } from 'preact/hooks'
-import confDocs from '../../get-docs/parsedConfParams.json'
 import { trpc } from '../utils/trpc'
 import { DashboardProvider } from './DashboardProvider'
 import { ThemeSwitcher } from './ThemeSwitcher'
@@ -23,29 +23,39 @@ export const DashboardView = () => {
 
     return (
         <DashboardProvider endpoint={endPoint}>
-            <div className='bg-primary-bg transition-colors h-screen'>
-                <div className='max-w-5xl px-6 mx-auto flex flex-col overflow-auto'>
-                    <Header />
-                    <Dashboard />
-                </div>
-            </div>
+            <DashboardLayout>
+                <DashboardOverView />
+            </DashboardLayout>
         </DashboardProvider>
     )
 }
 
-const Header = () => {
+export const DashboardLayout = ({ children }: { children: ComponentChildren }) => {
+    return (
+        <div className='bg-primary-bg transition-colors h-screen overflow-hidden overflow-y-auto'>
+            <div className='max-w-5xl px-6 mx-auto flex flex-col'>
+                <DashboardHeader />
+                {children}
+            </div>
+        </div>
+    )
+}
+
+export const DashboardHeader = () => {
     const [endpoint] = useAtom(endPointAtom)
 
     return (
         <div className='flex justify-between  py-5 h-fit z-10'>
-            <h1 className='text-[40px] font-semibold text-primary-text'>Dashboard</h1>
+            <Link href={`/dashboard?e=${endpoint}`}>
+                <h1 className='text-[40px] font-semibold text-primary-text'>Dashboard</h1>
+            </Link>
             <div className='flex'>
-                <div className='flex justify-center items-center'>
+                <div className='flex justify-center items-center mr-5'>
                     <span className='text-primary-text'>{endpoint}</span>
                     <Link href='/'>
                         <ArrowLeftOnRectangleIcon
                             width={20}
-                            className='cursor-pointer text-secondary-text ml-3 hover:text-primary-text transition-colors'
+                            className='cursor-pointer text-secondary-text ml-1 hover:text-primary-text transition-colors'
                         />
                     </Link>
                 </div>
@@ -55,7 +65,7 @@ const Header = () => {
     )
 }
 
-const Dashboard = () => {
+const DashboardOverView = () => {
     const { isLoading, data, error } = trpc.getConfig.useQuery()
 
     if (isLoading) return <div>loading</div>
@@ -63,34 +73,40 @@ const Dashboard = () => {
 
     return (
         <div className='mt-4'>
-            {data && <GlobalConfig data={data['global']} />}
+            {data && <GlobalConfigOverView data={data['global']} />}
         </div>
     )
 }
 
-const GlobalConfig = ({ data }: { data: Record<string, string> }) => {
+const GlobalConfigOverView = ({ data }: { data: Record<string, string> }) => {
+    const [endPoint] = useAtom(endPointAtom)
+
     return (
-        <div className=''>
-            <h2 className='text-xl font-medium'>Global Config</h2>
-            <div className='flex flex-col gap-20'>
-                {Object.entries(data).map(([name, value]) => {
-                    if (!name) return null
-                    return (
-                        <div key={name}>
-                            <div className='flex'>
-                                <span>{name}:</span>
-                                <span>{value}</span>
-                            </div>
-                            <div className='text-secondary-text'>
+        <Link href={`/dashboard/global?e=${endPoint}`}>
+            <div className='bg-secondary-bg rounded-md p-5 shadow-md'>
+                <h2 className="text-primary-text text-2xl font-semibold mb-3">
+                    Global configuration
+                </h2>
+                <div className='grid grid-cols-2 gap-2'>
+                    {Object.entries(data).slice(0, 12).map(([name, value]) => {
+                        if (!name) return null
+                        return (
+                            <div key={name} className="flex items-center">
+                                <span className="text-primary-text font-medium whitespace-nowrap">{name}:</span>
+                                <span className="text-secondary-text ml-2 whitespace-nowrap text-ellipsis overflow-hidden">{value}</span>
+                                {/* <div className='text-secondary-text'>
                                 docs:
                                 <pre>
                                     {confDocs['globalParams'][name as keyof typeof confDocs['globalParams']]?.md}
                                 </pre>
+                            </div> */}
                             </div>
-                        </div>
-                    )
-                })}
+                        )
+                    })}
+                </div>
             </div>
-        </div>
+        </Link>
     )
 }
+
+
