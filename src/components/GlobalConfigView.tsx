@@ -1,9 +1,8 @@
-import { DashboardLayout } from "./DashboardView"
+import { DashboardLayout } from './DashboardView'
 
 export const GlobalConfigView = () => {
-	return (
-		<DashboardLayout>
-
-		</DashboardLayout>
-	)
+    return (
+        <DashboardLayout>
+        </DashboardLayout>
+    )
 }

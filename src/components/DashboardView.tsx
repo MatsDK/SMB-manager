@@ -2,7 +2,7 @@ import { ArrowLeftOnRectangleIcon } from '@heroicons/react/24/outline'
 import { atom, useAtom } from 'jotai'
 import { ComponentChildren, h } from 'preact'
 import { Link, useRouter } from 'preact-router'
-import { useEffect } from 'preact/hooks'
+import { useEffect, useState } from 'preact/hooks'
 import { trpc } from '../utils/trpc'
 import { DashboardProvider } from './DashboardProvider'
 import { ThemeSwitcher } from './ThemeSwitcher'
@@ -12,8 +12,15 @@ const endPointAtom = atom('')
 export const DashboardView = () => {
     const [router] = useRouter()
     const [endPoint, setEndPoint] = useAtom(endPointAtom)
+    const [test, setTest] = useState()
 
     useEffect(() => {
+        fetch(
+            'http://192.168.0.164:3000/trpc/getConfig?batch=1&input=%7B%220%22%3A%7B%22json%22%3Anull%2C%22meta%22%3A%7B%22values%22%3A%5B%22undefined%22%5D%7D%7D%7D',
+        )
+            .then(response => response.json())
+            .then(json => setTest(json))
+            .catch(e => setTest(e))
         if (router.matches?.e) {
             setEndPoint(router.matches.e)
         }
@@ -24,6 +31,7 @@ export const DashboardView = () => {
     return (
         <DashboardProvider endpoint={endPoint}>
             <DashboardLayout>
+                {JSON.stringify(test)}
                 <DashboardOverView />
             </DashboardLayout>
         </DashboardProvider>
@@ -84,22 +92,26 @@ const GlobalConfigOverView = ({ data }: { data: Record<string, string> }) => {
     return (
         <Link href={`/dashboard/global?e=${endPoint}`}>
             <div className='bg-secondary-bg rounded-md p-5 shadow-md'>
-                <h2 className="text-primary-text text-2xl font-semibold mb-3">
+                <h2 className='text-primary-text text-2xl font-semibold mb-3'>
                     Global configuration
                 </h2>
                 <div className='grid grid-cols-2 gap-2'>
                     {Object.entries(data).slice(0, 12).map(([name, value]) => {
                         if (!name) return null
                         return (
-                            <div key={name} className="flex items-center">
-                                <span className="text-primary-text font-medium whitespace-nowrap">{name}:</span>
-                                <span className="text-secondary-text ml-2 whitespace-nowrap text-ellipsis overflow-hidden">{value}</span>
-                                {/* <div className='text-secondary-text'>
+                            <div key={name} className='flex items-center'>
+                                <span className='text-primary-text font-medium whitespace-nowrap'>{name}:</span>
+                                <span className='text-secondary-text ml-2 whitespace-nowrap text-ellipsis overflow-hidden'>
+                                    {value}
+                                </span>
+                                {
+                                    /* <div className='text-secondary-text'>
                                 docs:
                                 <pre>
                                     {confDocs['globalParams'][name as keyof typeof confDocs['globalParams']]?.md}
                                 </pre>
-                            </div> */}
+                            </div> */
+                                }
                             </div>
                         )
                     })}
@@ -108,5 +120,3 @@ const GlobalConfigOverView = ({ data }: { data: Record<string, string> }) => {
         </Link>
     )
 }
-
-
