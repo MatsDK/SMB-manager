@@ -6,21 +6,17 @@ import { useEffect, useState } from 'preact/hooks'
 import { trpc } from '../utils/trpc'
 import { DashboardProvider } from './DashboardProvider'
 import { ThemeSwitcher } from './ThemeSwitcher'
+import { invoke } from '@tauri-apps/api/tauri'
+
 
 const endPointAtom = atom('')
 
 export const DashboardView = () => {
     const [router] = useRouter()
     const [endPoint, setEndPoint] = useAtom(endPointAtom)
-    const [test, setTest] = useState()
 
     useEffect(() => {
-        fetch(
-            'http://192.168.0.164:3000/trpc/getConfig?batch=1&input=%7B%220%22%3A%7B%22json%22%3Anull%2C%22meta%22%3A%7B%22values%22%3A%5B%22undefined%22%5D%7D%7D%7D',
-        )
-            .then(response => response.json())
-            .then(json => setTest(json))
-            .catch(e => setTest(e))
+        invoke('my_custom_command', { invokeMessage: "test" })
         if (router.matches?.e) {
             setEndPoint(router.matches.e)
         }
@@ -31,7 +27,6 @@ export const DashboardView = () => {
     return (
         <DashboardProvider endpoint={endPoint}>
             <DashboardLayout>
-                {JSON.stringify(test)}
                 <DashboardOverView />
             </DashboardLayout>
         </DashboardProvider>
