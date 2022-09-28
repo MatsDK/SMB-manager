@@ -8,16 +8,24 @@ import { DashboardProvider } from './DashboardProvider'
 import { ThemeSwitcher } from './ThemeSwitcher'
 import { invoke } from '@tauri-apps/api/tauri'
 
-
 const endPointAtom = atom('')
 
 export const DashboardView = () => {
     const [router] = useRouter()
     const [endPoint, setEndPoint] = useAtom(endPointAtom)
+    const [test, setTest] = useState(null!)
 
     useEffect(() => {
-        invoke('my_custom_command', { invokeMessage: "test" })
         if (router.matches?.e) {
+            invoke('get_conf_command', { url: router.matches.e }).then(res => {
+                try {
+                    res = JSON.parse(res as string)
+
+                    if ((res as any)[0]?.result?.data?.json) {
+                        setTest((res as any)[0].result.data.json)
+                    }
+                } catch (e) { }
+            })
             setEndPoint(router.matches.e)
         }
     }, [router])
@@ -28,6 +36,9 @@ export const DashboardView = () => {
         <DashboardProvider endpoint={endPoint}>
             <DashboardLayout>
                 <DashboardOverView />
+                <pre>
+                    {JSON.stringify(test, null, 2)}
+                </pre>
             </DashboardLayout>
         </DashboardProvider>
     )
