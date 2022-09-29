@@ -1,36 +1,27 @@
-import { createExpressMiddleware } from '@trpc/server/adapters/express'
 import cors from 'cors'
 import express from 'express'
-import { createContext } from './context'
-import { appRouter } from './router'
-    ; (async () => {
-        const app = express()
+import ini from "ini"
+import fs from "node:fs"
 
-        const trpcApiEndpoint = '/trpc'
-        const playgroundEndpoint = '/trpc-playground'
+const SMB_CONF_PATH = '/etc/samba/smb.conf';
 
-        app.use(cors())
-        app.use(
-            trpcApiEndpoint,
-            createExpressMiddleware({
-                router: appRouter,
-                createContext,
-            }),
-        )
+; (async () => {
+    const app = express()
 
-        // app.use(
-        // 	playgroundEndpoint,
-        // 	await expressHandler({
-        // 		trpcApiEndpoint,
-        // 		playgroundEndpoint,
-        // 		router: appRouter,
-        // 		request: {
-        // 			superjson: true,
-        // 		},
-        // 	})
-        // )
 
-        app.listen(3000, () => {
-            console.log('Server is running')
-        })
-    })()
+    app.use(cors())
+    app.get('/conf', (req, res) => {
+        if (!fs.existsSync(SMB_CONF_PATH)) {
+            return
+        }
+
+        const rawConf = fs.readFileSync(SMB_CONF_PATH, 'utf-8')
+
+        console.log(ini.parse(rawConf))
+        res.json(ini.parse(rawConf))
+    })
+
+    app.listen(3000, () => {
+        console.log('Server is running')
+    })
+})()

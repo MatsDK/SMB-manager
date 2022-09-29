@@ -3,34 +3,23 @@ lockfileVersion: 5.4
 specifiers:
   '@heroicons/react': ^2.0.11
   '@preact/preset-vite': ^2.3.0
-  '@tanstack/react-query': ^4.3.1
   '@tauri-apps/api': ^1.0.2
   '@tauri-apps/cli': ^1.0.4
-  '@trpc/client': 10.0.0-proxy-alpha.74
-  '@trpc/react': 10.0.0-proxy-alpha.74
-  '@trpc/server': 10.0.0-proxy-alpha.74
   dprint: ^0.31.1
   jotai: ^1.8.2
   postcss: ^8.4.16
   preact: ^10.9.0
   preact-router: ^4.1.0
-  superjson: ^1.9.1
   tailwindcss: ^3.1.8
-  tailwindcss-themer: ^2.0.1
   typescript: ^4.6.4
   vite: ^3.0.0
 
 dependencies:
   '@heroicons/react': 2.0.11
-  '@tanstack/react-query': 4.3.1
   '@tauri-apps/api': 1.0.2
-  '@trpc/client': 10.0.0-proxy-alpha.74_36o77syoowmrieskh7r2qg2rtm
-  '@trpc/react': 10.0.0-proxy-alpha.74_325wuojeasn2gdeuwm65lm65zm
-  '@trpc/server': 10.0.0-proxy-alpha.74
   jotai: 1.8.2
   preact: 10.10.6
   preact-router: 4.1.0_preact@10.10.6
-  superjson: 1.9.1
 
 devDependencies:
   '@preact/preset-vite': 2.3.0_preact@10.10.6+vite@3.0.9
@@ -38,7 +27,6 @@ devDependencies:
   dprint: 0.31.1
   postcss: 8.4.16
   tailwindcss: 3.1.8_postcss@8.4.16
-  tailwindcss-themer: 2.0.1_tailwindcss@3.1.8
   typescript: 4.8.2
   vite: 3.0.9
 
@@ -423,26 +411,6 @@ packages:
       picomatch: 2.3.1
     dev: true
 
-  /@tanstack/query-core/4.3.1:
-    resolution: {integrity: sha512-NrtvJYVxgO2vdXyogchORW2wDh81nHjnH8n51OvaLFilC59DE8hyMzrHmKI4J0MKx8wZvROChVHHXpbBGstR8A==}
-    dev: false
-
-  /@tanstack/react-query/4.3.1:
-    resolution: {integrity: sha512-rVtXi5yRbhK9EGrlrnIsLNSW+bNpu8OuTnSjf5SNau2L6N+0UXrL911rtkIgF908zPKwaOoAqW/dM7d+ICp+Dg==}
-    peerDependencies:
-      react: ^16.8.0 || ^17.0.0 || ^18.0.0
-      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
-      react-native: '*'
-    peerDependenciesMeta:
-      react-dom:
-        optional: true
-      react-native:
-        optional: true
-    dependencies:
-      '@tanstack/query-core': 4.3.1
-      use-sync-external-store: 1.2.0
-    dev: false
-
   /@tauri-apps/api/1.0.2:
     resolution: {integrity: sha512-yuNW0oeJ1/ZA7wNF1KgxhHrSu5viPVzY/UgUczzN5ptLM8dH15Juy5rEGkoHfeXGju90Y/l22hi3BtIrp/za+w==}
     engines: {node: '>= 12.22.0', npm: '>= 6.6.0', yarn: '>= 1.19.1'}
@@ -544,32 +512,6 @@ packages:
       '@tauri-apps/cli-win32-ia32-msvc': 1.0.5
       '@tauri-apps/cli-win32-x64-msvc': 1.0.5
     dev: true
-
-  /@trpc/client/10.0.0-proxy-alpha.74_36o77syoowmrieskh7r2qg2rtm:
-    resolution: {integrity: sha512-WQPkm4/srgoxS7shopV1KuyBJLoGWH2OlUI7o24SAunl0IZS6RtzxehE3BfvVxZct3fNjewP9Z9iD5iE+r1m0g==}
-    peerDependencies:
-      '@trpc/server': 10.0.0-proxy-alpha.74
-    dependencies:
-      '@trpc/server': 10.0.0-proxy-alpha.74
-    dev: false
-
-  /@trpc/react/10.0.0-proxy-alpha.74_325wuojeasn2gdeuwm65lm65zm:
-    resolution: {integrity: sha512-NL01eSKDLoECSOFQo9f5vRLufrbg9idfAkBkAZxA8pl6NaVRvtueiaSYwBT1lFW4Vr+0Nh3+8deQVSZiWNguag==}
-    peerDependencies:
-      '@tanstack/react-query': ^4.0.10
-      '@trpc/client': 10.0.0-proxy-alpha.74
-      '@trpc/server': 10.0.0-proxy-alpha.74
-      react: '>=16.8.0'
-      react-dom: '>=16.8.0'
-    dependencies:
-      '@tanstack/react-query': 4.3.1
-      '@trpc/client': 10.0.0-proxy-alpha.74_36o77syoowmrieskh7r2qg2rtm
-      '@trpc/server': 10.0.0-proxy-alpha.74
-    dev: false
-
-  /@trpc/server/10.0.0-proxy-alpha.74:
-    resolution: {integrity: sha512-l+3qT1SGKhXxH8KoCRVyvOcUswg1FsIwq4VSHL6n7o3ctVefLlGcK+QpyI7owx9vQGZJjIvp0R2LBtmGc4sbIw==}
-    dev: false
 
   /acorn-node/1.8.2:
     resolution: {integrity: sha512-8mt+fslDufLYntIoPAaIMUe/lrbrehIiwmR3t2k9LljIzoigEPF27eLk2hy8zSGzmR/ogr7zbRKINMo1u0yh5A==}
@@ -681,13 +623,6 @@ packages:
       color-name: 1.1.3
     dev: true
 
-  /color-convert/2.0.1:
-    resolution: {integrity: sha512-RRECPsj7iu/xb5oKYcsFHSppFNnsj/52OVTRKb4zP5onXwVF3zVmmToNcOfGC+CRDpfK/U584fMg38ZHCaElKQ==}
-    engines: {node: '>=7.0.0'}
-    dependencies:
-      color-name: 1.1.4
-    dev: true
-
   /color-name/1.1.3:
     resolution: {integrity: sha512-72fSenhMw2HZMTVHeCA9KCmpEIbzWiQsjN+BHcBbS9vr1mtt+vJjPdksIBNUmKAW8TFUDPJK5SUU3QhE9NEXDw==}
     dev: true
@@ -696,33 +631,11 @@ packages:
     resolution: {integrity: sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==}
     dev: true
 
-  /color-string/1.9.1:
-    resolution: {integrity: sha512-shrVawQFojnZv6xM40anx4CkoDP+fZsw/ZerEMsW/pyzsRbElpsL/DBVW7q3ExxwusdNXI3lXpuhEZkzs8p5Eg==}
-    dependencies:
-      color-name: 1.1.4
-      simple-swizzle: 0.2.2
-    dev: true
-
-  /color/4.2.3:
-    resolution: {integrity: sha512-1rXeuUUiGGrykh+CeBdu5Ie7OJwinCgQY0bc7GCRxy5xVHy+moaqkpL/jqQq0MtQOeYcrqEz4abc5f0KtU7W4A==}
-    engines: {node: '>=12.5.0'}
-    dependencies:
-      color-convert: 2.0.1
-      color-string: 1.9.1
-    dev: true
-
   /convert-source-map/1.8.0:
     resolution: {integrity: sha512-+OQdjP49zViI/6i7nIJpA8rAl4sV/JdPfU9nZs3VqOwGIgizICvuN2ru6fMd+4llL0tar18UYJXfZ/TWtmhUjA==}
     dependencies:
       safe-buffer: 5.1.2
     dev: true
-
-  /copy-anything/3.0.2:
-    resolution: {integrity: sha512-CzATjGXzUQ0EvuvgOCI6A4BGOo2bcVx8B+eC2nF862iv9fopnPQwlrbACakNCHRIJbCSBj+J/9JeDf60k64MkA==}
-    engines: {node: '>=12.13'}
-    dependencies:
-      is-what: 4.1.7
-    dev: false
 
   /cssesc/3.0.0:
     resolution: {integrity: sha512-/Tb/JcjK111nNScGob5MNtsntNM1aCNUDipB/TkwZFhyDrrE47SOx/18wF2bbjgc3ZzCSKW1T5nt5EbFoAz/Vg==}
@@ -1077,10 +990,6 @@ packages:
       function-bind: 1.1.1
     dev: true
 
-  /is-arrayish/0.3.2:
-    resolution: {integrity: sha512-eVRqCvVlZbuw3GrM63ovNSNAeA1K16kaR/LRY/92w0zxQ5/1YzwblUX652i4Xs9RwAGjW9d9y6X88t8OaAJfWQ==}
-    dev: true
-
   /is-binary-path/2.1.0:
     resolution: {integrity: sha512-ZMERYes6pDydyuGidse7OsHxtbI7WVeUEozgR/g7rd0xUimYNlvZRE/K2MgZTjWy725IfelLeVcEM97mmtRGXw==}
     engines: {node: '>=8'}
@@ -1110,11 +1019,6 @@ packages:
     resolution: {integrity: sha512-41Cifkg6e8TylSpdtTpeLVMqvSBEVzTttHvERD741+pnZ8ANv0004MRL43QKPDlK9cGvNp6NZWZUBlbGXYxxng==}
     engines: {node: '>=0.12.0'}
     dev: true
-
-  /is-what/4.1.7:
-    resolution: {integrity: sha512-DBVOQNiPKnGMxRMLIYSwERAS5MVY1B7xYiGnpgctsOFvVDz9f9PFXXxMcTOHuoqYp4NK9qFYQaIC1NRRxLMpBQ==}
-    engines: {node: '>=12.13'}
-    dev: false
 
   /jotai/1.8.2:
     resolution: {integrity: sha512-jRKTQKChLAJGB3zG5zklJoMtpWYixUi2jK3pZd5ZRpH4pQnjYYEOAVYCzZGr4Ce5Uj7j0ffYoLM4ULAAQXUoGw==}
@@ -1167,10 +1071,6 @@ packages:
     hasBin: true
     dev: true
 
-  /just-unique/4.1.1:
-    resolution: {integrity: sha512-iLt/RPnrazs4D4IVaO1Hac2W/WH9SiCT3CuhX9hip0xWVnUe+28Lyse4w/OxjSwdZ0CzduimWPMZH/KwxnCAEw==}
-    dev: true
-
   /kolorist/1.5.1:
     resolution: {integrity: sha512-lxpCM3HTvquGxKGzHeknB/sUjuVoUElLlfYnXZT73K8geR9jQbroGlSCFBax9/0mpGoD3kzcMLnOlGQPJJNyqQ==}
     dev: true
@@ -1178,14 +1078,6 @@ packages:
   /lilconfig/2.0.6:
     resolution: {integrity: sha512-9JROoBW7pobfsx+Sq2JsASvCo6Pfo6WWoUW79HuB1BCoBXD4PLWJPqDF6fNj67pqBYTbAHkE57M1kS/+L1neOg==}
     engines: {node: '>=10'}
-    dev: true
-
-  /lodash.merge/4.6.2:
-    resolution: {integrity: sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==}
-    dev: true
-
-  /lodash.mergewith/4.6.2:
-    resolution: {integrity: sha512-GK3g5RPZWTRSeLSpgP8Xhra+pnjBC56q9FZYe1d5RN3TJ35dbkGy3YqBSMbyCrlbi+CM9Z3Jk5yTL7RCsqboyQ==}
     dev: true
 
   /merge2/1.4.1:
@@ -1391,23 +1283,10 @@ packages:
     hasBin: true
     dev: true
 
-  /simple-swizzle/0.2.2:
-    resolution: {integrity: sha512-JA//kQgZtbuY83m+xT+tXJkmJncGMTFT+C+g2h2R9uxkYIrE2yy9sgmcLhCnw57/WSD+Eh3J97FPEDFnbXnDUg==}
-    dependencies:
-      is-arrayish: 0.3.2
-    dev: true
-
   /source-map-js/1.0.2:
     resolution: {integrity: sha512-R0XvVJ9WusLiqTCEiGCmICCMplcCkIwwR11mOSD9CR5u+IXYdiseeEuXCVAjS54zqwkLcPNnmU4OeJ6tUrWhDw==}
     engines: {node: '>=0.10.0'}
     dev: true
-
-  /superjson/1.9.1:
-    resolution: {integrity: sha512-oT3HA2nPKlU1+5taFgz/HDy+GEaY+CWEbLzaRJVD4gZ7zMVVC4GDNFdgvAZt6/VuIk6D2R7RtPAiCHwmdzlMmg==}
-    engines: {node: '>=10'}
-    dependencies:
-      copy-anything: 3.0.2
-    dev: false
 
   /supports-color/5.5.0:
     resolution: {integrity: sha512-QjVjwdXIt408MIiAqCX4oUKsgU2EqAGzs2Ppkm4aQYbjm+ZEWEcW4SfFNTr4uMNZma0ey4f5lgLrkB0aX0QMow==}
@@ -1419,18 +1298,6 @@ packages:
   /supports-preserve-symlinks-flag/1.0.0:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
-    dev: true
-
-  /tailwindcss-themer/2.0.1_tailwindcss@3.1.8:
-    resolution: {integrity: sha512-A6bS7rDjGIgK29Xl3J6B+vnI4bRvYSzoyintxKf2MoTONJnHsRI/heJ+cjUfK+z1q7QX6VFZn1pgyiX69Re0Pw==}
-    peerDependencies:
-      tailwindcss: ^3.1.0
-    dependencies:
-      color: 4.2.3
-      just-unique: 4.1.1
-      lodash.merge: 4.6.2
-      lodash.mergewith: 4.6.2
-      tailwindcss: 3.1.8_postcss@8.4.16
     dev: true
 
   /tailwindcss/3.1.8_postcss@8.4.16:
@@ -1494,12 +1361,6 @@ packages:
       escalade: 3.1.1
       picocolors: 1.0.0
     dev: true
-
-  /use-sync-external-store/1.2.0:
-    resolution: {integrity: sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==}
-    peerDependencies:
-      react: ^16.8.0 || ^17.0.0 || ^18.0.0
-    dev: false
 
   /util-deprecate/1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}

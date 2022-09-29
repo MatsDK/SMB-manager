@@ -1,12 +1,10 @@
 import { ArrowLeftOnRectangleIcon } from '@heroicons/react/24/outline'
+import { invoke } from '@tauri-apps/api/tauri'
 import { atom, useAtom } from 'jotai'
 import { ComponentChildren, h } from 'preact'
 import { Link, useRouter } from 'preact-router'
 import { useEffect, useState } from 'preact/hooks'
-import { trpc } from '../utils/trpc'
-import { DashboardProvider } from './DashboardProvider'
 import { ThemeSwitcher } from './ThemeSwitcher'
-import { invoke } from '@tauri-apps/api/tauri'
 
 const endPointAtom = atom('')
 
@@ -21,9 +19,7 @@ export const DashboardView = () => {
                 try {
                     res = JSON.parse(res as string)
 
-                    if ((res as any)[0]?.result?.data?.json) {
-                        setTest((res as any)[0].result.data.json)
-                    }
+                    if (res) setTest(res as any)
                 } catch (e) { }
             })
             setEndPoint(router.matches.e)
@@ -33,14 +29,12 @@ export const DashboardView = () => {
     if (!endPoint) return <div>No endpoint</div>
 
     return (
-        <DashboardProvider endpoint={endPoint}>
-            <DashboardLayout>
-                <DashboardOverView />
-                <pre>
-                    {JSON.stringify(test, null, 2)}
-                </pre>
-            </DashboardLayout>
-        </DashboardProvider>
+        <DashboardLayout>
+            <DashboardOverView />
+            <pre>
+                {JSON.stringify(test, null, 2)}
+            </pre>
+        </DashboardLayout>
     )
 }
 
@@ -80,14 +74,9 @@ export const DashboardHeader = () => {
 }
 
 const DashboardOverView = () => {
-    const { isLoading, data, error } = trpc.getConfig.useQuery()
-
-    if (isLoading) return <div>loading</div>
-    if (error) return <div>Error: {error?.message}</div>
-
     return (
         <div className='mt-4'>
-            {data && <GlobalConfigOverView data={data['global']} />}
+            {/* {data && <GlobalConfigOverView data={data['global']} />} */}
         </div>
     )
 }
