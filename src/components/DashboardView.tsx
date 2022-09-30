@@ -4,6 +4,7 @@ import { atom, useAtom } from 'jotai'
 import { ComponentChildren, h } from 'preact'
 import { Link, useRouter } from 'preact-router'
 import { useEffect, useState } from 'preact/hooks'
+import { configAtom } from '../utils/store'
 import { ThemeSwitcher } from './ThemeSwitcher'
 
 const endPointAtom = atom('')
@@ -11,18 +12,18 @@ const endPointAtom = atom('')
 export const DashboardView = () => {
     const [router] = useRouter()
     const [endPoint, setEndPoint] = useAtom(endPointAtom)
-    const [test, setTest] = useState(null!)
+    const [, setConfig] = useAtom(configAtom)
 
     useEffect(() => {
         if (router.matches?.e) {
+            setEndPoint(router.matches.e)
             invoke('get_conf_command', { url: router.matches.e }).then(res => {
                 try {
                     res = JSON.parse(res as string)
 
-                    if (res) setTest(res as any)
-                } catch (e) { }
+                    if (res) setConfig(res as any)
+                } catch (e) {}
             })
-            setEndPoint(router.matches.e)
         }
     }, [router])
 
@@ -31,9 +32,6 @@ export const DashboardView = () => {
     return (
         <DashboardLayout>
             <DashboardOverView />
-            <pre>
-                {JSON.stringify(test, null, 2)}
-            </pre>
         </DashboardLayout>
     )
 }
@@ -74,9 +72,10 @@ export const DashboardHeader = () => {
 }
 
 const DashboardOverView = () => {
+    const [config] = useAtom(configAtom)
     return (
         <div className='mt-4'>
-            {/* {data && <GlobalConfigOverView data={data['global']} />} */}
+            {config?.['global'] && <GlobalConfigOverView data={config['global']} />}
         </div>
     )
 }

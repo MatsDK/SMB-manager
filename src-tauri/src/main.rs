@@ -6,12 +6,7 @@
 #[tauri::command]
 async fn get_conf_command(url: String) -> String {
     let url = format!("{}/conf", url);
-    let resp = reqwest::get(url)
-        .await
-        .unwrap()
-        .text()
-        .await
-        .unwrap();
+    let resp = reqwest::get(url).await.unwrap().text().await.unwrap();
 
     resp
 }

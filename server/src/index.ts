@@ -1,13 +1,11 @@
 import cors from 'cors'
 import express from 'express'
-import ini from "ini"
-import fs from "node:fs"
+import ini from 'ini'
+import fs from 'node:fs'
 
-const SMB_CONF_PATH = '/etc/samba/smb.conf';
-
-; (async () => {
+const SMB_CONF_PATH = '/etc/samba/smb.conf'
+;(async () => {
     const app = express()
-
 
     app.use(cors())
     app.get('/conf', (req, res) => {
