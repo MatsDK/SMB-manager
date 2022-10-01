@@ -6,8 +6,8 @@ import Turndown from 'turndown'
 const confDocsUrl = 'https://www.samba.org/samba/docs/current/man-html/smb.conf.5.html'
 
 type ParsedConf = {
-    globalParams: Record<string, { md: string }>
-    sharedParams: Record<string, { md: string }>
+    globalParams: Record<string, { md: string, default: string | null }>
+    sharedParams: Record<string, { md: string, default: string | null }>
 }
 
 const webScrapeConfDocs = async () => {
@@ -65,7 +65,8 @@ const webScrapeConfDocs = async () => {
         const [before, after] = [name.slice(0, lastIndex), name.slice(lastIndex + 1)]
         if (after === '(G)' || after === '(S)') {
             const elementChildren = $(element).find('div.variablelist > dl.variablelist > dd > *')
-            let ignoreIdxs = [] as number[]
+            let ignoreIdxs = [] as number[];
+            let defaultValue: string = undefined!;
 
             elementChildren.each((i, child_el) => {
                 const el = $(child_el).text().trim()
@@ -73,6 +74,7 @@ const webScrapeConfDocs = async () => {
                     ignoreIdxs.push(i)
                 }
                 if (el.startsWith('Default:')) {
+                    defaultValue = el.split('=').pop()?.trim() || ''
                     ignoreIdxs.push(i)
                 }
             })
@@ -86,8 +88,8 @@ const webScrapeConfDocs = async () => {
 
             const md = turndownService.turndown(descriptionEl.html() || '')
 
-            if (after === '(G)') output.globalParams[before] = { md }
-            else output.sharedParams[before] = { md }
+            if (after === '(G)') output.globalParams[before] = { md, default: defaultValue }
+            else output.sharedParams[before] = { md, default: defaultValue }
         } else {
             return
         }

@@ -9,6 +9,7 @@ specifiers:
   jotai: ^1.8.2
   postcss: ^8.4.16
   preact: ^10.9.0
+  preact-markdown: ^2.1.0
   preact-router: ^4.1.0
   tailwindcss: ^3.1.8
   typescript: ^4.6.4
@@ -19,6 +20,7 @@ dependencies:
   '@tauri-apps/api': 1.0.2
   jotai: 1.8.2
   preact: 10.10.6
+  preact-markdown: 2.1.0_preact@10.10.6
   preact-router: 4.1.0_preact@10.10.6
 
 devDependencies:
@@ -1080,6 +1082,12 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
+  /marked/4.1.1:
+    resolution: {integrity: sha512-0cNMnTcUJPxbA6uWmCmjWz4NJRe/0Xfk2NhXCUHjew9qJzFN20krFnsUe7QynwqOwa5m1fZ4UDg0ycKFVC0ccw==}
+    engines: {node: '>= 12'}
+    hasBin: true
+    dev: false
+
   /merge2/1.4.1:
     resolution: {integrity: sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==}
     engines: {node: '>= 8'}
@@ -1212,6 +1220,23 @@ packages:
       picocolors: 1.0.0
       source-map-js: 1.0.2
     dev: true
+
+  /preact-markdown/2.1.0_preact@10.10.6:
+    resolution: {integrity: sha512-6c2hfarjLFkVDNa1hUKytXID6wl6yilZnGb2y83xKXnfk5SpXYAwhJc+JENgffAcNALWggqvX/ezlk8/8qJsuA==}
+    dependencies:
+      marked: 4.1.1
+      preact-markup: 2.1.1_preact@10.10.6
+    transitivePeerDependencies:
+      - preact
+    dev: false
+
+  /preact-markup/2.1.1_preact@10.10.6:
+    resolution: {integrity: sha512-8JL2p36mzK8XkspOyhBxUSPjYwMxDM0L5BWBZWxsZMVW8WsGQrYQDgVuDKkRspt2hwrle+Cxr/053hpc9BJwfw==}
+    peerDependencies:
+      preact: '>=10'
+    dependencies:
+      preact: 10.10.6
+    dev: false
 
   /preact-router/4.1.0_preact@10.10.6:
     resolution: {integrity: sha512-y1w2YvVpKAju9FMV+fAVR1NpH4MW5q07BZrziMZeg6F/rGJ9KvLUZtjOqsy2I8fDYiX36AM1AQTXIIK3jigBhA==}
