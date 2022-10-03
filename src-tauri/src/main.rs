@@ -3,6 +3,8 @@
     windows_subsystem = "windows"
 )]
 
+use serde::Serialize;
+
 #[tauri::command]
 async fn get_conf_command(url: String) -> String {
     let url = format!("{}/conf", url);
@@ -11,9 +13,24 @@ async fn get_conf_command(url: String) -> String {
     resp
 }
 
+#[derive(Serialize)]
+struct SetConfBody {
+    conf: String,
+}
+
+#[tauri::command]
+async fn set_conf_command(url: String, conf: String) {
+    let client = reqwest::Client::new();
+
+    let body = SetConfBody { conf };
+
+    let url = format!("{}/set-conf", url);
+    let _res = client.post(url).json(&body).send().await.unwrap();
+}
+
 fn main() {
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![get_conf_command])
+        .invoke_handler(tauri::generate_handler![get_conf_command, set_conf_command])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

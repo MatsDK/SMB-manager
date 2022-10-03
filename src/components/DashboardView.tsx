@@ -3,11 +3,11 @@ import { invoke } from '@tauri-apps/api/tauri'
 import { atom, useAtom } from 'jotai'
 import { ComponentChildren, h } from 'preact'
 import { Link, useRouter } from 'preact-router'
-import { useEffect, useState } from 'preact/hooks'
+import { useEffect } from 'preact/hooks'
 import { configAtom } from '../utils/store'
 import { ThemeSwitcher } from './ThemeSwitcher'
 
-const endPointAtom = atom('')
+export const endPointAtom = atom('')
 
 export const DashboardView = () => {
     const [router] = useRouter()
@@ -22,7 +22,7 @@ export const DashboardView = () => {
                     res = JSON.parse(res as string)
 
                     if (res) setConfig(res as any)
-                } catch (e) {}
+                } catch (e) { }
             })
         }
     }, [router])
