@@ -22,7 +22,7 @@ export const DashboardView = () => {
                     res = JSON.parse(res as string)
 
                     if (res) setConfig(res as any)
-                } catch (e) { }
+                } catch (e) {}
             })
         }
     }, [router])

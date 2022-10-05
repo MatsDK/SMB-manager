@@ -2,7 +2,13 @@ import { invoke } from '@tauri-apps/api/tauri'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import PreactMarkdown from 'preact-markdown'
 import { globalParams } from '../../get-docs/parsedConfParams.json'
-import { changedGlobalFields, configAtom, editGlobalConfigAtom, globalChangedAtom, GlobalConfigAtom } from '../utils/store'
+import {
+    changedGlobalFields,
+    configAtom,
+    editGlobalConfigAtom,
+    globalChangedAtom,
+    GlobalConfigAtom,
+} from '../utils/store'
 import { DashboardLayout, endPointAtom } from './DashboardView'
 
 const Markdown = PreactMarkdown as any
@@ -24,8 +30,8 @@ export const GlobalConfigView = () => {
             ...config,
             global: {
                 ...globalConfig,
-                ...changedValues
-            }
+                ...changedValues,
+            },
         }
 
         invoke('set_conf_command', { conf: JSON.stringify(newConfig), url: endpoint })
@@ -75,10 +81,11 @@ const ConfigParam = ({ name, value }: ConfigParamProps) => {
                         type='text'
                         defaultValue={value}
                         title={(docs as any).default}
-                        onChange={(e) => setGlobalConfig(prev => {
-                            prev[name] = e.currentTarget.value
-                            return prev
-                        })}
+                        onChange={(e) =>
+                            setGlobalConfig(prev => {
+                                prev[name] = e.currentTarget.value
+                                return prev
+                            })}
                     />
                 </div>
             </div>
