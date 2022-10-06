@@ -1,10 +1,10 @@
 import { ArrowLeftOnRectangleIcon } from '@heroicons/react/24/outline'
 import { invoke } from '@tauri-apps/api/tauri'
-import { atom, useAtom } from 'jotai'
+import { atom, useAtom, useAtomValue } from 'jotai'
 import { ComponentChildren, h } from 'preact'
 import { Link, useRouter } from 'preact-router'
 import { useEffect } from 'preact/hooks'
-import { configAtom } from '../utils/store'
+import { configAtom, SmbSharesAtom } from '../utils/store'
 import { ThemeSwitcher } from './ThemeSwitcher'
 
 export const endPointAtom = atom('')
@@ -16,13 +16,14 @@ export const DashboardView = () => {
 
     useEffect(() => {
         if (router.matches?.e) {
+            setConfig(null)
             setEndPoint(router.matches.e)
             invoke('get_conf_command', { url: router.matches.e }).then(res => {
                 try {
                     res = JSON.parse(res as string)
 
                     if (res) setConfig(res as any)
-                } catch (e) {}
+                } catch (e) { }
             })
         }
     }, [router])
@@ -75,7 +76,23 @@ const DashboardOverView = () => {
     const [config] = useAtom(configAtom)
     return (
         <div className='mt-4'>
-            {config?.['global'] && <GlobalConfigOverView data={config['global']} />}
+            {config && (
+                <div>
+                    {config?.['global'] && <GlobalConfigOverView data={config['global']} />}
+                    <SmbSharesOverView />
+                </div>
+            )}
+        </div>
+    )
+}
+
+const SmbSharesOverView = () => {
+    const smbShares = useAtomValue(SmbSharesAtom)
+    console.log(smbShares);
+
+    return (
+        <div>
+            <h1>Smb Shares</h1>
         </div>
     )
 }

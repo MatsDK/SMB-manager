@@ -1,4 +1,4 @@
-import { atom, useAtom } from 'jotai'
+import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { Link } from 'preact-router'
 import { ThemeSwitcher } from './ThemeSwitcher'
 
@@ -50,17 +50,7 @@ const ConnectToServerForm = () => {
                         placeholder='0.0.0.0:3000'
                     />
                 </div>
-                {
-                    /* <div className='flex flex-col py-1'>
-                    <p className='text-primary-text text-lg font-medium'>Port</p>
-                    <input
-                        type='number'
-                        className='bg-primary-bg text-primary-text border border-secondary-bg px-2 py-1 text-lg outline-none rounded-md'
-                        placeholder='3000'
-                    />
-                </div> */
-                }
-                <Link href={`/dashboard?e=${endpointInput}`}>
+                <Link href={`/dashboard?e=${endpointInput}`} onClick={() => saveRecentConnections(endpointInput)}>
                     <p className='text-center p-1 bg-primary-text text-primary-bg w-full mt-5 rounded-md hover:scale-[1.02] transition-transform'>
                         Connect
                     </p>
@@ -73,10 +63,44 @@ const ConnectToServerForm = () => {
     )
 }
 
+const getRecentConnections = (): string[] => {
+    if (localStorage.getItem('recent-connections')) {
+        const items = JSON.parse(localStorage.getItem('recent-connections')!)
+        if (!Array.isArray(items)) return []
+
+        return items
+    }
+
+    return []
+}
+
+const RecentConnectionsAtom = atom(() => getRecentConnections())
+
 const RecentConnections = () => {
+    const recentConnections = useAtomValue(RecentConnectionsAtom)
+
     return (
         <section id='recent' className='h-screen flex flex-col items-center pt-32'>
             <h3 className='text-2xl font-medium text-primary-text '>Recent connections</h3>
+            <ul className="">
+                {recentConnections.map((name) => (
+                    <li key={name}>
+                        {name}
+                        <Link href={`/dashboard?e=${name}`} onClick={() => saveRecentConnections(name)} >
+                            <p className='text-center p-1 bg-primary-text text-primary-bg w-full mt-5 rounded-md hover:scale-[1.02] transition-transform'>
+                                Connect
+                            </p>
+                        </Link>
+                    </li>
+                ))}
+            </ul>
         </section>
     )
+}
+
+const saveRecentConnections = (lastConnectionEndpoint: string) => {
+    let recentConnections = getRecentConnections()
+    recentConnections = Array.from(new Set([lastConnectionEndpoint, ...recentConnections]))
+
+    localStorage.setItem('recent-connections', JSON.stringify(recentConnections))
 }
