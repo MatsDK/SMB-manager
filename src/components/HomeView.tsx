@@ -82,12 +82,15 @@ const RecentConnections = () => {
     return (
         <section id='recent' className='h-screen flex flex-col items-center pt-32'>
             <h3 className='text-2xl font-medium text-primary-text '>Recent connections</h3>
-            <ul className="">
+            <ul className='w-full flex flex-col items-center gap-5 mt-20'>
                 {recentConnections.map((name) => (
-                    <li key={name}>
+                    <li
+                        key={name}
+                        className='bg-secondary-bg w-3/4 text-primary-text flex items-center px-5 py-3 justify-between rounded-md font-medium'
+                    >
                         {name}
-                        <Link href={`/dashboard?e=${name}`} onClick={() => saveRecentConnections(name)} >
-                            <p className='text-center p-1 bg-primary-text text-primary-bg w-full mt-5 rounded-md hover:scale-[1.02] transition-transform'>
+                        <Link href={`/dashboard?e=${name}`} onClick={() => saveRecentConnections(name)}>
+                            <p className='text-center p-1 bg-primary-text text-primary-bg rounded-md hover:scale-[1.02] transition-transform px-10'>
                                 Connect
                             </p>
                         </Link>

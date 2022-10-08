@@ -23,7 +23,7 @@ export const DashboardView = () => {
                     res = JSON.parse(res as string)
 
                     if (res) setConfig(res as any)
-                } catch (e) { }
+                } catch (e) {}
             })
         }
     }, [router])
@@ -88,12 +88,41 @@ const DashboardOverView = () => {
 
 const SmbSharesOverView = () => {
     const smbShares = useAtomValue(SmbSharesAtom)
-    console.log(smbShares);
+    console.log(smbShares)
 
     return (
-        <div>
-            <h1>Smb Shares</h1>
+        <div className='mt-8'>
+            <h1 className='font-semibold text-[30px] text-primary-text'>
+                Smb Shares
+                <span className='ml-2 text-secondary-text font-normal text-xl '>({smbShares.length})</span>
+            </h1>
+            <div className='grid grid-cols-2 gap-5'>
+                {smbShares && smbShares.map(([name, params]) => <SmbShareCard name={name} params={params} />)}
+            </div>
         </div>
+    )
+}
+
+const SmbShareCard = ({ name, params }: { name: string; params: Record<string, string> }) => {
+    return (
+        <Link href='/smb-share'>
+            <div className='bg-secondary-bg rounded-md px-5 py-2 shadow-md'>
+                <h3 className='text-primary-text font-medium text-xl'>[{name}]</h3>
+                <div className='grid grid-cols-2 gap-2'>
+                    {Object.entries(params).slice(0, 12).map(([name, value]) => {
+                        if (!name) return null
+                        return (
+                            <div key={name} className='flex items-center'>
+                                <span className='text-primary-text font-medium whitespace-nowrap'>{name}:</span>
+                                <span className='text-secondary-text ml-2 whitespace-nowrap text-ellipsis overflow-hidden'>
+                                    {value}
+                                </span>
+                            </div>
+                        )
+                    })}
+                </div>
+            </div>
+        </Link>
     )
 }
 
@@ -115,14 +144,6 @@ const GlobalConfigOverView = ({ data }: { data: Record<string, string> }) => {
                                 <span className='text-secondary-text ml-2 whitespace-nowrap text-ellipsis overflow-hidden'>
                                     {value}
                                 </span>
-                                {
-                                    /* <div className='text-secondary-text'>
-                                docs:
-                                <pre>
-                                    {confDocs['globalParams'][name as keyof typeof confDocs['globalParams']]?.md}
-                                </pre>
-                            </div> */
-                                }
                             </div>
                         )
                     })}
