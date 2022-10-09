@@ -88,14 +88,18 @@ const DashboardOverView = () => {
 
 const SmbSharesOverView = () => {
     const smbShares = useAtomValue(SmbSharesAtom)
-    console.log(smbShares)
 
     return (
         <div className='mt-8'>
-            <h1 className='font-semibold text-[30px] text-primary-text'>
-                Smb Shares
-                <span className='ml-2 text-secondary-text font-normal text-xl '>({smbShares.length})</span>
-            </h1>
+            <div className='flex justify-between items-center'>
+                <h1 className='font-semibold text-[30px] text-primary-text'>
+                    Smb Shares
+                    <span className='ml-2 text-secondary-text font-normal text-xl '>({smbShares.length})</span>
+                </h1>
+                <button className='text-center bg-primary-text text-primary-bg px-5 py-1 rounded-md hover:scale-[1.02] transition-transform'>
+                    New Share
+                </button>
+            </div>
             <div className='grid grid-cols-2 gap-5'>
                 {smbShares && smbShares.map(([name, params]) => <SmbShareCard name={name} params={params} />)}
             </div>
@@ -105,7 +109,7 @@ const SmbSharesOverView = () => {
 
 const SmbShareCard = ({ name, params }: { name: string; params: Record<string, string> }) => {
     return (
-        <Link href='/smb-share'>
+        <Link href={`/dashboard/share/${name}`}>
             <div className='bg-secondary-bg rounded-md px-5 py-2 shadow-md'>
                 <h3 className='text-primary-text font-medium text-xl'>[{name}]</h3>
                 <div className='grid grid-cols-2 gap-2'>

@@ -2,6 +2,7 @@ import { Route, Router } from 'preact-router'
 import { DashboardView } from './components/DashboardView'
 import { GlobalConfigView } from './components/GlobalConfigView'
 import { HomeView } from './components/HomeView'
+import { SmbShareView } from './components/SmbShareView'
 import './index.css'
 
 export const App = () => {
@@ -10,6 +11,7 @@ export const App = () => {
             <Route default component={HomeView} />
             <Route path='/dashboard' component={DashboardView} />
             <Route path='/dashboard/global' component={GlobalConfigView} />
+            <Route path='/dashboard/share/:name' component={SmbShareView} />
         </Router>
     )
 }
