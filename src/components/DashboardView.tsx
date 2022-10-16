@@ -1,6 +1,6 @@
 import { ArrowLeftOnRectangleIcon } from '@heroicons/react/24/outline'
 import { invoke } from '@tauri-apps/api/tauri'
-import { atom, useAtom, useAtomValue } from 'jotai'
+import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { ComponentChildren, h } from 'preact'
 import { Link, useRouter } from 'preact-router'
 import { useEffect } from 'preact/hooks'
@@ -12,7 +12,7 @@ export const endPointAtom = atom('')
 export const DashboardView = () => {
     const [router] = useRouter()
     const [endPoint, setEndPoint] = useAtom(endPointAtom)
-    const [, setConfig] = useAtom(configAtom)
+    const setConfig = useSetAtom(configAtom)
 
     useEffect(() => {
         if (router.matches?.e) {
@@ -37,25 +37,37 @@ export const DashboardView = () => {
     )
 }
 
-export const DashboardLayout = ({ children }: { children: ComponentChildren }) => {
+interface DashboardLayoutProps {
+    pageTitle?: string
+}
+
+export const DashboardLayout = ({ children, ...props }: { children: ComponentChildren } & DashboardLayoutProps) => {
     return (
         <div className='bg-primary-bg transition-colors h-screen overflow-hidden overflow-y-auto'>
             <div className='max-w-5xl px-6 mx-auto flex flex-col'>
-                <DashboardHeader />
+                <DashboardHeader {...props} />
                 {children}
             </div>
         </div>
     )
 }
 
-export const DashboardHeader = () => {
+export const DashboardHeader = ({ pageTitle }: DashboardLayoutProps) => {
     const [endpoint] = useAtom(endPointAtom)
 
     return (
         <div className='flex justify-between  py-5 h-fit z-10'>
-            <Link href={`/dashboard?e=${endpoint}`}>
-                <h1 className='text-[40px] font-semibold text-primary-text'>Dashboard</h1>
-            </Link>
+            <div className='flex items-center'>
+                <Link href={`/dashboard?e=${endpoint}`}>
+                    <h1 className='text-[40px] font-semibold text-primary-text'>Dashboard</h1>
+                </Link>
+                {pageTitle && (
+                    <h1 className='text-[40px] font-semibold text-primary-text flex'>
+                        <p className='px-5'>/</p>
+                        {pageTitle}
+                    </h1>
+                )}
+            </div>
             <div className='flex'>
                 <div className='flex justify-center items-center mr-5'>
                     <span className='text-primary-text'>{endpoint}</span>

@@ -38,7 +38,7 @@ export const GlobalConfigView = () => {
     }
 
     return (
-        <DashboardLayout>
+        <DashboardLayout pageTitle='Global'>
             {hasChanged && (
                 <div>
                     Global changed
