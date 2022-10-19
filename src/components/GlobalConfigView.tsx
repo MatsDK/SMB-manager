@@ -1,3 +1,4 @@
+import { save } from '@tauri-apps/api/dialog'
 import { invoke } from '@tauri-apps/api/tauri'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import PreactMarkdown from 'preact-markdown'
@@ -10,6 +11,7 @@ import {
     GlobalConfigAtom,
 } from '../utils/store'
 import { DashboardLayout, endPointAtom } from './DashboardView'
+import { SaveChangesPopup } from './SaveChangesPopup'
 
 const Markdown = PreactMarkdown as any
 
@@ -25,7 +27,7 @@ export const GlobalConfigView = () => {
     const changedValues = useAtomValue(changedGlobalFields)
     if (!globalConfig) return null
 
-    const saveChanges = () => {
+    const onSave = () => {
         const newConfig = {
             ...config,
             global: {
@@ -40,10 +42,10 @@ export const GlobalConfigView = () => {
     return (
         <DashboardLayout pageTitle='Global'>
             {hasChanged && (
-                <div>
-                    Global changed
-                    <button onClick={saveChanges}>Save</button>
-                </div>
+                <SaveChangesPopup
+                    message='Save changes in Global config'
+                    onSave={onSave}
+                />
             )}
             {GlobalParamsKeys.map((paramName) => {
                 if (!paramName) return

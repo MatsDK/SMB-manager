@@ -1,4 +1,5 @@
 import { atom } from 'jotai'
+import { compareFields } from './compareFields'
 
 export type GlobalConfigType = Record<string, string>
 export type ConfigType =
@@ -29,8 +30,3 @@ export const editGlobalConfigAtom = atom(
         set(changedGlobalFields, newVal)
     },
 )
-
-const compareFields = (initial: GlobalConfigType, newFields: GlobalConfigType) =>
-    Object.entries(newFields).some(
-        ([name, value]) => value !== (initial[name] || ''),
-    )

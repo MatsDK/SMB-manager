@@ -43,8 +43,8 @@ interface DashboardLayoutProps {
 
 export const DashboardLayout = ({ children, ...props }: { children: ComponentChildren } & DashboardLayoutProps) => {
     return (
-        <div className='bg-primary-bg transition-colors h-screen overflow-hidden overflow-y-auto'>
-            <div className='max-w-5xl px-6 mx-auto flex flex-col'>
+        <div className='bg-primary-bg transition-colors h-screen overflow-hidden overflow-y-auto '>
+            <div className='max-w-5xl px-6 mx-auto flex flex-col relative'>
                 <DashboardHeader {...props} />
                 {children}
             </div>

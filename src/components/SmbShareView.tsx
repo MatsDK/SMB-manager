@@ -3,17 +3,22 @@ import PreactMarkdown from 'preact-markdown'
 import { useRouter } from 'preact-router'
 import { useEffect, useState } from 'preact/hooks'
 import { sharedParams } from '../../get-docs/parsedConfParams.json'
+import { compareFields } from '../utils/compareFields'
 import { SmbSharesAtom } from '../utils/store'
 import { DashboardLayout } from './DashboardView'
+import { SaveChangesPopup } from './SaveChangesPopup'
 const Markdown = PreactMarkdown as any
 
 const ShareParamKeys = Object.keys(sharedParams)
 type ShareParamKeys = keyof typeof sharedParams
 
-export const SmbShareView = ({}) => {
+export const SmbShareView = ({ }) => {
     const smbShares = useAtomValue(SmbSharesAtom)
     const [route] = useRouter()
+
     const [currShare, setCurrShare] = useState<Record<string, string>>(null!)
+    const [editedFields, setEditedFields] = useState<Record<string, string>>({})
+    const [hasChanged, setHasChanged] = useState(false)
 
     useEffect(() => {
         if (!route?.matches?.name) return
@@ -22,8 +27,20 @@ export const SmbShareView = ({}) => {
         if (share) setCurrShare(share[1])
     }, [route, smbShares])
 
+    useEffect(() => {
+        setHasChanged(compareFields(currShare, editedFields))
+    }, [editedFields, currShare])
+
     return (
         <DashboardLayout pageTitle={`[${route?.matches?.name}]`}>
+            {hasChanged && (
+                <SaveChangesPopup
+                    message={`Save changes in [${route.matches?.name}]`}
+                    onSave={() => {
+                        console.log('save')
+                    }}
+                />
+            )}
             {currShare && (
                 ShareParamKeys.map((paramName) => {
                     if (!paramName) return
@@ -34,6 +51,7 @@ export const SmbShareView = ({}) => {
                             key={paramName}
                             name={paramName as ShareParamKeys}
                             value={value}
+                            onChange={(newVal) => setEditedFields(fields => ({ ...fields, [paramName]: newVal }))}
                         />
                     )
                 })
@@ -45,9 +63,10 @@ export const SmbShareView = ({}) => {
 interface ConfigParamProps {
     value: string
     name: ShareParamKeys
+    onChange: (newVal: string) => void
 }
 
-const ConfigParam = ({ name, value }: ConfigParamProps) => {
+const ConfigParam = ({ name, value, onChange }: ConfigParamProps) => {
     const docs = sharedParams[name]
     return (
         <div className='my-4 py-2'>
@@ -60,6 +79,7 @@ const ConfigParam = ({ name, value }: ConfigParamProps) => {
                         type='text'
                         defaultValue={value}
                         title={(docs as any).default}
+                        onChange={(e) => onChange(e.currentTarget.value)}
                     />
                 </div>
             </div>
