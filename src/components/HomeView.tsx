@@ -1,5 +1,6 @@
-import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { atom, useAtom, useAtomValue } from 'jotai'
 import { Link } from 'preact-router'
+import { useCallback } from 'preact/hooks'
 import { ThemeSwitcher } from './ThemeSwitcher'
 
 export const HomeView = () => {
@@ -33,6 +34,13 @@ const ConnectToServerForm = () => {
         el?.scrollIntoView({ behavior: 'smooth' })
     }
 
+    const submit = useCallback((e: Event) => {
+        e.preventDefault()
+
+        saveRecentConnections(endpointInput)
+        window.location.href = `/dashboard?e=${endpointInput}`
+    }, [endpointInput])
+
     return (
         <section className='w-full h-screen grid place-items-center relative'>
             <div className='w-96 p-4 flex flex-col'>
@@ -40,21 +48,23 @@ const ConnectToServerForm = () => {
                     <h3 className='text-2xl font-medium text-primary-text '>Connect to server</h3>
                     <p className='text-sm text-secondary-text'>Connect to any device running a server, smb service</p>
                 </div>
-                <div className='flex flex-col py-1'>
-                    <p className='text-primary-text text-lg font-medium'>Endpoint</p>
-                    <input
-                        value={endpointInput}
-                        onChange={(e) => setEndpointInput(e.currentTarget.value)}
-                        type='text'
-                        className='bg-primary-bg text-primary-text border border-secondary-bg px-2 py-1 text-lg outline-none rounded-md'
-                        placeholder='0.0.0.0:3000'
-                    />
-                </div>
-                <Link href={`/dashboard?e=${endpointInput}`} onClick={() => saveRecentConnections(endpointInput)}>
-                    <p className='text-center p-1 bg-primary-text text-primary-bg w-full mt-5 rounded-md hover:scale-[1.02] transition-transform'>
-                        Connect
-                    </p>
-                </Link>
+                <form onSubmit={submit}>
+                    <div className='flex flex-col py-1'>
+                        <p className='text-primary-text text-lg font-medium'>Endpoint</p>
+                        <input
+                            value={endpointInput}
+                            onChange={(e) => setEndpointInput(e.currentTarget.value)}
+                            type='text'
+                            className='bg-primary-bg text-primary-text border border-secondary-bg px-2 py-1 text-lg outline-none rounded-md'
+                            placeholder='0.0.0.0:3000'
+                        />
+                    </div>
+                    <button type='submit' className='w-full'>
+                        <p className='text-center p-1 bg-primary-text text-primary-bg w-full mt-5 rounded-md hover:scale-[1.02] transition-transform'>
+                            Connect
+                        </p>
+                    </button>
+                </form>
                 <div onClick={scrollToRecentConnections} className='text-center text-secondary-text cursor-pointer'>
                     Recent connections
                 </div>

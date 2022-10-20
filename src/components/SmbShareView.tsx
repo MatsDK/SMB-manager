@@ -12,7 +12,7 @@ const Markdown = PreactMarkdown as any
 const ShareParamKeys = Object.keys(sharedParams)
 type ShareParamKeys = keyof typeof sharedParams
 
-export const SmbShareView = ({ }) => {
+export const SmbShareView = ({}) => {
     const smbShares = useAtomValue(SmbSharesAtom)
     const [route] = useRouter()
 
