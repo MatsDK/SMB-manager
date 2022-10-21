@@ -23,6 +23,7 @@ const SMB_CONF_PATH = '/etc/samba/smb.conf'
 
     app.post('/set-conf', (req, res) => {
         if (!req.body?.conf) return res.send()
+        const rawConf = fs.readFileSync(SMB_CONF_PATH, 'utf-8')
 
         try {
             const config = Object.entries(JSON.parse(req.body.conf)).map(([name, params]) => {
@@ -31,9 +32,12 @@ const SMB_CONF_PATH = '/etc/samba/smb.conf'
 
             console.log(config)
 
+            fs.writeFileSync(SMB_CONF_PATH, config)
+
             res.send()
         } catch (e) {
             console.log(e)
+            fs.writeFileSync(SMB_CONF_PATH, rawConf)
             return res.send()
         }
     })
@@ -44,7 +48,7 @@ const SMB_CONF_PATH = '/etc/samba/smb.conf'
 })()
 
 const buildParams = (params: Record<string, string>) => {
-    return Object.entries(params).filter(([name]) => !!name).map(([name, value]) => {
+    return Object.entries(params).filter(([name, value]) => !!name && !!value).map(([name, value]) => {
         return `  ${name}=${value}`
     }).join('\n')
 }

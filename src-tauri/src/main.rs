@@ -19,13 +19,15 @@ struct SetConfBody {
 }
 
 #[tauri::command]
-async fn set_conf_command(url: String, conf: String) {
+async fn set_conf_command(url: String, conf: String) -> String {
     let client = reqwest::Client::new();
 
     let body = SetConfBody { conf };
 
-    let url = format!("{}/set-conf", url);
-    let _res = client.post(url).json(&body).send().await.unwrap();
+    let post_url = format!("{}/set-conf", url);
+    let _res = client.post(post_url).json(&body).send().await.unwrap();
+
+    get_conf_command(url).await
 }
 
 fn main() {

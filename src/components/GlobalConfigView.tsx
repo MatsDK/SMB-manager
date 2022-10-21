@@ -1,4 +1,3 @@
-import { save } from '@tauri-apps/api/dialog'
 import { invoke } from '@tauri-apps/api/tauri'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import PreactMarkdown from 'preact-markdown'
@@ -6,6 +5,7 @@ import { globalParams } from '../../get-docs/parsedConfParams.json'
 import {
     changedGlobalFields,
     configAtom,
+    ConfigType,
     editGlobalConfigAtom,
     globalChangedAtom,
     GlobalConfigAtom,
@@ -21,10 +21,11 @@ type GlobalDocsKeys = keyof typeof globalParams
 export const GlobalConfigView = () => {
     const endpoint = useAtomValue(endPointAtom)
 
-    const config = useAtomValue(configAtom)
+    const [config, setConfig] = useAtom(configAtom)
     const globalConfig = useAtomValue(GlobalConfigAtom)
     const hasChanged = useAtomValue(globalChangedAtom)
-    const changedValues = useAtomValue(changedGlobalFields)
+    const changedValues = useAtom(changedGlobalFields)
+    const setGlobalConfig = useSetAtom(editGlobalConfigAtom)
     if (!globalConfig) return null
 
     const onSave = () => {
@@ -36,7 +37,16 @@ export const GlobalConfigView = () => {
             },
         }
 
-        invoke('set_conf_command', { conf: JSON.stringify(newConfig), url: endpoint })
+        invoke('set_conf_command', { conf: JSON.stringify(newConfig), url: endpoint }).then(res => {
+            try {
+                res = JSON.parse(res as string)
+
+                if (res) {
+                    setConfig(res as ConfigType)
+                    setGlobalConfig(() => ({}))
+                }
+            } catch {}
+        })
     }
 
     return (

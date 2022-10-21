@@ -1,9 +1,10 @@
 import { ArrowLeftOnRectangleIcon } from '@heroicons/react/24/outline'
 import { invoke } from '@tauri-apps/api/tauri'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { ComponentChildren, h } from 'preact'
+import { ComponentChildren, h, Ref } from 'preact'
 import { Link, useRouter } from 'preact-router'
-import { useEffect } from 'preact/hooks'
+import { MutableRef, useEffect, useRef } from 'preact/hooks'
+import { useClickOutisde } from '../hooks/useClickOutside'
 import { configAtom, SmbSharesAtom } from '../utils/store'
 import { ThemeSwitcher } from './ThemeSwitcher'
 
@@ -52,8 +53,15 @@ export const DashboardLayout = ({ children, ...props }: { children: ComponentChi
     )
 }
 
+const DropdownOpenAtom = atom(false)
+
 export const DashboardHeader = ({ pageTitle }: DashboardLayoutProps) => {
     const [endpoint] = useAtom(endPointAtom)
+    const [dropdownOpen, setDropdownOpen] = useAtom(DropdownOpenAtom)
+
+    const dropdownRef = useClickOutisde(() => {
+        setDropdownOpen(false)
+    }) as Ref<HTMLDivElement>
 
     return (
         <div className='flex justify-between  py-5 h-fit z-10'>
@@ -69,14 +77,23 @@ export const DashboardHeader = ({ pageTitle }: DashboardLayoutProps) => {
                 )}
             </div>
             <div className='flex'>
-                <div className='flex justify-center items-center mr-5'>
-                    <span className='text-primary-text'>{endpoint}</span>
-                    <Link href='/'>
-                        <ArrowLeftOnRectangleIcon
-                            width={20}
-                            className='cursor-pointer text-secondary-text ml-1 hover:text-primary-text transition-colors'
-                        />
-                    </Link>
+                <div ref={dropdownRef} className='flex justify-center items-center mr-5 relative'>
+                    <span className='text-primary-text cursor-pointer' onClick={() => setDropdownOpen(s => !s)}>
+                        {endpoint}
+                    </span>
+                    {dropdownOpen && (
+                        <div className='absolute top-12 w-60 rounded-md bg-secondary-bg drop-shadow-md overflow-hidden'>
+                            <Link href='/' onClick={() => setDropdownOpen(false)}>
+                                <div className='flex px-4 py-2 items-center gap-3 text-secondary-text cursor-pointer hover:text-primary-text transition-colors'>
+                                    <ArrowLeftOnRectangleIcon
+                                        width={20}
+                                        className='cursor-pointer'
+                                    />
+                                    Logout
+                                </div>
+                            </Link>
+                        </div>
+                    )}
                 </div>
                 <ThemeSwitcher />
             </div>

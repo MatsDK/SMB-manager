@@ -1,11 +1,12 @@
-import { useAtomValue } from 'jotai'
+import { invoke } from '@tauri-apps/api/tauri'
+import { useAtom, useAtomValue } from 'jotai'
 import PreactMarkdown from 'preact-markdown'
 import { useRouter } from 'preact-router'
 import { useEffect, useState } from 'preact/hooks'
 import { sharedParams } from '../../get-docs/parsedConfParams.json'
 import { compareFields } from '../utils/compareFields'
-import { SmbSharesAtom } from '../utils/store'
-import { DashboardLayout } from './DashboardView'
+import { configAtom, ConfigType, SmbSharesAtom } from '../utils/store'
+import { DashboardLayout, endPointAtom } from './DashboardView'
 import { SaveChangesPopup } from './SaveChangesPopup'
 const Markdown = PreactMarkdown as any
 
@@ -14,6 +15,8 @@ type ShareParamKeys = keyof typeof sharedParams
 
 export const SmbShareView = ({}) => {
     const smbShares = useAtomValue(SmbSharesAtom)
+    const [config, setConfig] = useAtom(configAtom)
+    const endpoint = useAtomValue(endPointAtom)
     const [route] = useRouter()
 
     const [currShare, setCurrShare] = useState<Record<string, string>>(null!)
@@ -31,14 +34,33 @@ export const SmbShareView = ({}) => {
         setHasChanged(compareFields(currShare, editedFields))
     }, [editedFields, currShare])
 
+    const onSave = () => {
+        if (!route?.matches?.name) return
+        const name = route.matches.name
+
+        const newConfig = {
+            ...config,
+            [name]: {
+                ...currShare,
+                ...editedFields,
+            },
+        }
+
+        invoke('set_conf_command', { conf: JSON.stringify(newConfig), url: endpoint }).then((res) => {
+            try {
+                res = JSON.parse(res as string)
+
+                if (res) setConfig(res as ConfigType)
+            } catch (e) {}
+        })
+    }
+
     return (
         <DashboardLayout pageTitle={`[${route?.matches?.name}]`}>
             {hasChanged && (
                 <SaveChangesPopup
                     message={`Save changes in [${route.matches?.name}]`}
-                    onSave={() => {
-                        console.log('save')
-                    }}
+                    onSave={onSave}
                 />
             )}
             {currShare && (
