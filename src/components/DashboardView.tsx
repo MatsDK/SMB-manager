@@ -1,11 +1,11 @@
-import { ArrowLeftOnRectangleIcon } from '@heroicons/react/24/outline'
+import { ArrowLeftOnRectangleIcon, ArrowPathIcon } from '@heroicons/react/24/outline'
 import { invoke } from '@tauri-apps/api/tauri'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { ComponentChildren, h, Ref } from 'preact'
 import { Link, useRouter } from 'preact-router'
 import { MutableRef, useEffect, useRef } from 'preact/hooks'
 import { useClickOutisde } from '../hooks/useClickOutside'
-import { configAtom, SmbSharesAtom } from '../utils/store'
+import { configAtom, ReloadPopupOpenAtom, SmbSharesAtom } from '../utils/store'
 import { ThemeSwitcher } from './ThemeSwitcher'
 
 export const endPointAtom = atom('')
@@ -43,11 +43,39 @@ interface DashboardLayoutProps {
 }
 
 export const DashboardLayout = ({ children, ...props }: { children: ComponentChildren } & DashboardLayoutProps) => {
+    const reloadPopupOpen = useAtomValue(ReloadPopupOpenAtom)
+
     return (
         <div className='bg-primary-bg transition-colors h-screen overflow-hidden overflow-y-auto '>
             <div className='max-w-5xl px-6 mx-auto flex flex-col relative'>
                 <DashboardHeader {...props} />
                 {children}
+            </div>
+            {reloadPopupOpen && <ReloadServicePopup />}
+        </div>
+    )
+}
+
+const ReloadServicePopup = () => {
+    const setReloadPopupOpen = useSetAtom(ReloadPopupOpenAtom)
+
+    return (
+        <div className='fixed left-0 right-0 bottom-3 '>
+            <div className='w-full bottom-3 bg-primary-text px-10 py-5 drop-shadow-2xl max-w-3xl mx-auto flex justify-between rounded-lg items-center z-10'>
+                <span className='text-primary-bg'>
+                    Restart SMB service to apply the changes
+                </span>
+                <div>
+                    <button
+                        onClick={() => setReloadPopupOpen(false)}
+                        className='text-center p-1 text-primary-bg rounded-md px-4'
+                    >
+                        cancel
+                    </button>
+                    <button className='text-center p-1 bg-primary-bg text-primary-text rounded-md hover:scale-[1.02] transition-transform px-4'>
+                        Reload
+                    </button>
+                </div>
             </div>
         </div>
     )
@@ -81,21 +109,37 @@ export const DashboardHeader = ({ pageTitle }: DashboardLayoutProps) => {
                     <span className='text-primary-text cursor-pointer' onClick={() => setDropdownOpen(s => !s)}>
                         {endpoint}
                     </span>
-                    {dropdownOpen && (
-                        <div className='absolute top-12 w-60 rounded-md bg-secondary-bg drop-shadow-md overflow-hidden'>
-                            <Link href='/' onClick={() => setDropdownOpen(false)}>
-                                <div className='flex px-4 py-2 items-center gap-3 text-secondary-text cursor-pointer hover:text-primary-text transition-colors'>
-                                    <ArrowLeftOnRectangleIcon
-                                        width={20}
-                                        className='cursor-pointer'
-                                    />
-                                    Logout
-                                </div>
-                            </Link>
-                        </div>
-                    )}
+                    {dropdownOpen && <HeaderDropdown />}
                 </div>
                 <ThemeSwitcher />
+            </div>
+        </div>
+    )
+}
+
+const HeaderDropdown = () => {
+    const setDropdownOpen = useSetAtom(DropdownOpenAtom)
+
+    return (
+        <div className='absolute top-12 w-60 rounded-md bg-secondary-bg drop-shadow-md overflow-hidden'>
+            <Link href='/' onClick={() => setDropdownOpen(false)}>
+                <div className='flex px-4 py-2 items-center gap-3 text-secondary-text cursor-pointer hover:text-primary-text transition-colors'>
+                    <ArrowLeftOnRectangleIcon
+                        width={20}
+                        className='cursor-pointer'
+                    />
+                    Logout
+                </div>
+            </Link>
+            <div
+                onClick={() => {}}
+                className='flex px-4 py-2 items-center gap-3 text-secondary-text cursor-pointer hover:text-primary-text transition-colors'
+            >
+                <ArrowPathIcon
+                    width={20}
+                    className='cursor-pointer'
+                />
+                Restart Service
             </div>
         </div>
     )

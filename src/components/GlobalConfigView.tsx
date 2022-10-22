@@ -9,6 +9,7 @@ import {
     editGlobalConfigAtom,
     globalChangedAtom,
     GlobalConfigAtom,
+    ReloadPopupOpenAtom,
 } from '../utils/store'
 import { DashboardLayout, endPointAtom } from './DashboardView'
 import { SaveChangesPopup } from './SaveChangesPopup'
@@ -24,8 +25,9 @@ export const GlobalConfigView = () => {
     const [config, setConfig] = useAtom(configAtom)
     const globalConfig = useAtomValue(GlobalConfigAtom)
     const hasChanged = useAtomValue(globalChangedAtom)
-    const changedValues = useAtom(changedGlobalFields)
+    const changedValues = useAtomValue(changedGlobalFields)
     const setGlobalConfig = useSetAtom(editGlobalConfigAtom)
+    const setReloadPopupOpen = useSetAtom(ReloadPopupOpenAtom)
     if (!globalConfig) return null
 
     const onSave = () => {
@@ -44,6 +46,7 @@ export const GlobalConfigView = () => {
                 if (res) {
                     setConfig(res as ConfigType)
                     setGlobalConfig(() => ({}))
+                    setReloadPopupOpen(true)
                 }
             } catch {}
         })

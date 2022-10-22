@@ -30,3 +30,5 @@ export const editGlobalConfigAtom = atom(
         set(changedGlobalFields, newVal)
     },
 )
+
+export const ReloadPopupOpenAtom = atom(false)

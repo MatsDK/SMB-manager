@@ -1,11 +1,11 @@
 import { invoke } from '@tauri-apps/api/tauri'
-import { useAtom, useAtomValue } from 'jotai'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import PreactMarkdown from 'preact-markdown'
 import { useRouter } from 'preact-router'
 import { useEffect, useState } from 'preact/hooks'
 import { sharedParams } from '../../get-docs/parsedConfParams.json'
 import { compareFields } from '../utils/compareFields'
-import { configAtom, ConfigType, SmbSharesAtom } from '../utils/store'
+import { configAtom, ConfigType, ReloadPopupOpenAtom, SmbSharesAtom } from '../utils/store'
 import { DashboardLayout, endPointAtom } from './DashboardView'
 import { SaveChangesPopup } from './SaveChangesPopup'
 const Markdown = PreactMarkdown as any
@@ -17,6 +17,7 @@ export const SmbShareView = ({}) => {
     const smbShares = useAtomValue(SmbSharesAtom)
     const [config, setConfig] = useAtom(configAtom)
     const endpoint = useAtomValue(endPointAtom)
+    const setReloadPopupOpen = useSetAtom(ReloadPopupOpenAtom)
     const [route] = useRouter()
 
     const [currShare, setCurrShare] = useState<Record<string, string>>(null!)
@@ -50,7 +51,10 @@ export const SmbShareView = ({}) => {
             try {
                 res = JSON.parse(res as string)
 
-                if (res) setConfig(res as ConfigType)
+                if (res) {
+                    setConfig(res as ConfigType)
+                    setReloadPopupOpen(true)
+                }
             } catch (e) {}
         })
     }
