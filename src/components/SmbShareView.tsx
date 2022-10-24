@@ -4,6 +4,7 @@ import PreactMarkdown from 'preact-markdown'
 import { useRouter } from 'preact-router'
 import { useEffect, useState } from 'preact/hooks'
 import { sharedParams } from '../../get-docs/parsedConfParams.json'
+import { buildConfig } from '../utils/buildConfigFile'
 import { compareFields } from '../utils/compareFields'
 import { configAtom, ConfigType, ReloadPopupOpenAtom, SmbSharesAtom } from '../utils/store'
 import { DashboardLayout, endPointAtom } from './DashboardView'
@@ -45,9 +46,9 @@ export const SmbShareView = ({}) => {
                 ...currShare,
                 ...editedFields,
             },
-        }
+        } as ConfigType
 
-        invoke('set_conf_command', { conf: JSON.stringify(newConfig), url: endpoint }).then((res) => {
+        invoke('set_conf_command', { conf: buildConfig(newConfig), url: endpoint }).then((res) => {
             try {
                 res = JSON.parse(res as string)
 

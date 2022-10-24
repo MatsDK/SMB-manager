@@ -1,9 +1,10 @@
 import { ArrowLeftOnRectangleIcon, ArrowPathIcon } from '@heroicons/react/24/outline'
 import { invoke } from '@tauri-apps/api/tauri'
+import ini from 'ini'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { ComponentChildren, h, Ref } from 'preact'
 import { Link, useRouter } from 'preact-router'
-import { MutableRef, useEffect, useRef } from 'preact/hooks'
+import { useEffect } from 'preact/hooks'
 import { useClickOutisde } from '../hooks/useClickOutside'
 import { configAtom, ReloadPopupOpenAtom, SmbSharesAtom } from '../utils/store'
 import { ThemeSwitcher } from './ThemeSwitcher'
@@ -21,7 +22,8 @@ export const DashboardView = () => {
             setEndPoint(router.matches.e)
             invoke('get_conf_command', { url: router.matches.e }).then(res => {
                 try {
-                    res = JSON.parse(res as string)
+                    res = ini.parse(res as string)
+                    // res = JSON.parse(res as string)
 
                     if (res) setConfig(res as any)
                 } catch (e) {}

@@ -2,6 +2,7 @@ import { invoke } from '@tauri-apps/api/tauri'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import PreactMarkdown from 'preact-markdown'
 import { globalParams } from '../../get-docs/parsedConfParams.json'
+import { buildConfig } from '../utils/buildConfigFile'
 import {
     changedGlobalFields,
     configAtom,
@@ -31,7 +32,7 @@ export const GlobalConfigView = () => {
     if (!globalConfig) return null
 
     const onSave = () => {
-        const newConfig = {
+        const newConfig: ConfigType = {
             ...config,
             global: {
                 ...globalConfig,
@@ -39,7 +40,7 @@ export const GlobalConfigView = () => {
             },
         }
 
-        invoke('set_conf_command', { conf: JSON.stringify(newConfig), url: endpoint }).then(res => {
+        invoke('set_conf_command', { conf: buildConfig(newConfig), url: endpoint }).then(res => {
             try {
                 res = JSON.parse(res as string)
 
