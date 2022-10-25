@@ -19,11 +19,20 @@ impl SmbApi for SmbApiServer {
         fs::read_to_string(SMB_CONF_PATH).unwrap()
     }
 
-    async fn set_conf(self, _: context::Context, conf: String) {
+    async fn set_conf(self, _: context::Context, conf: String) -> String {
         println!("{conf}");
 
         let mut file = fs::File::create(SMB_CONF_PATH).unwrap();
         file.write_all(conf.as_bytes()).unwrap();
+
+        fs::read_to_string(SMB_CONF_PATH).unwrap()
+    }
+
+    async fn restart_service(self, _: context::Context) {
+        // service smbd restart
+        // ufw allow samba
+
+        println!("restart service");
     }
 }
 

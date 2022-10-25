@@ -27,6 +27,8 @@ export const DashboardView = () => {
 
                     if (res) setConfig(res as any)
                 } catch (e) {}
+            }).catch(e => {
+                console.error(e)
             })
         }
     }, [router])
@@ -60,6 +62,15 @@ export const DashboardLayout = ({ children, ...props }: { children: ComponentChi
 
 const ReloadServicePopup = () => {
     const setReloadPopupOpen = useSetAtom(ReloadPopupOpenAtom)
+    const endpoint = useAtomValue(endPointAtom)
+
+    const restart = () => {
+        invoke('restart_service_command', { url: endpoint }).then(() => {
+            setReloadPopupOpen(false)
+        }).catch(e => {
+            console.error(e)
+        })
+    }
 
     return (
         <div className='fixed left-0 right-0 bottom-3 '>
@@ -74,7 +85,10 @@ const ReloadServicePopup = () => {
                     >
                         cancel
                     </button>
-                    <button className='text-center p-1 bg-primary-bg text-primary-text rounded-md hover:scale-[1.02] transition-transform px-4'>
+                    <button
+                        onClick={restart}
+                        className='text-center p-1 bg-primary-bg text-primary-text rounded-md hover:scale-[1.02] transition-transform px-4'
+                    >
                         Reload
                     </button>
                 </div>

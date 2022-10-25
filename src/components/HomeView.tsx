@@ -36,6 +36,7 @@ const ConnectToServerForm = () => {
 
     const submit = useCallback((e: Event) => {
         e.preventDefault()
+        if (!endpointInput) return
 
         saveRecentConnections(endpointInput)
         window.location.href = `/dashboard?e=${endpointInput}`

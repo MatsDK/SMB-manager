@@ -1,4 +1,5 @@
 import { invoke } from '@tauri-apps/api/tauri'
+import ini from 'ini'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import PreactMarkdown from 'preact-markdown'
 import { useRouter } from 'preact-router'
@@ -50,13 +51,15 @@ export const SmbShareView = ({}) => {
 
         invoke('set_conf_command', { conf: buildConfig(newConfig), url: endpoint }).then((res) => {
             try {
-                res = JSON.parse(res as string)
+                res = ini.parse(res as string)
 
                 if (res) {
                     setConfig(res as ConfigType)
                     setReloadPopupOpen(true)
                 }
             } catch (e) {}
+        }).catch(e => {
+            console.error(e)
         })
     }
 
