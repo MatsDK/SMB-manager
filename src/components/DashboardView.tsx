@@ -26,14 +26,22 @@ export const DashboardView = () => {
                     // res = JSON.parse(res as string)
 
                     if (res) setConfig(res as any)
-                } catch (e) {}
+                } catch (e) { }
             }).catch(e => {
                 console.error(e)
             })
         }
     }, [router])
 
-    if (!endPoint) return <div>No endpoint</div>
+    if (!endPoint) return (
+        <div className="h-screen w-screen flex justify-center items-center bg-primary-bg">
+            <div className="flex flex-col items-center">
+                <span className="text-xl font-semibold text-primary-text">No endpoint found</span>
+                <Link href="/" className="text-primary-text">Go back</Link>
+            </div>
+        </div>
+    )
+
 
     return (
         <DashboardLayout>
@@ -148,7 +156,7 @@ const HeaderDropdown = () => {
                 </div>
             </Link>
             <div
-                onClick={() => {}}
+                onClick={() => { }}
                 className='flex px-4 py-2 items-center gap-3 text-secondary-text cursor-pointer hover:text-primary-text transition-colors'
             >
                 <ArrowPathIcon

@@ -5,7 +5,7 @@ use tarpc::{
 };
 use service::SmbApi;
 use futures::stream::StreamExt;
-use std::{io::Write, fs, net::SocketAddr};
+use std::{io::Write, fs, net::SocketAddr, process::Command};
 
 mod constants;
 use constants::SMB_CONF_PATH;
@@ -30,9 +30,11 @@ impl SmbApi for SmbApiServer {
 
     async fn restart_service(self, _: context::Context) {
         // service smbd restart
+        let status = Command::new("service").args(["smbd", "restart"]).status().unwrap();
+        println!("restart service status: {:?}", status);
         // ufw allow samba
-
-        println!("restart service");
+        // let status = Command::new("ufw").args(["allow", "samba"]).status().unwrap();
+        // println!("update ufw rules status: {:?}", status);
     }
 }
 
