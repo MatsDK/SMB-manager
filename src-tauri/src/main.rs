@@ -13,6 +13,8 @@ mod service {
         async fn set_conf(conf: String) -> String;
 
         async fn restart_service();
+
+        async fn get_service_status() -> String;
     }
 }
 
@@ -50,12 +52,24 @@ async fn restart_service_command(url: String) {
     let _response = client.restart_service(context::current()).await.unwrap();
 }
 
+#[tauri::command]
+async fn get_service_status_command(url: String) {
+    let transport = tarpc::serde_transport::tcp::connect(url.clone(), Json::default);
+
+    let client =
+        service::SmbApiClient::new(client::Config::default(), transport.await.unwrap()).spawn();
+
+    let response = client.get_service_status(context::current()).await.unwrap();
+    println!("{response}");
+}
+
 fn main() {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
             get_conf_command,
             set_conf_command,
-            restart_service_command
+            restart_service_command,
+            get_service_status_command
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

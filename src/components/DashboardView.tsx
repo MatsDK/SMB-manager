@@ -143,6 +143,7 @@ export const DashboardHeader = ({ pageTitle }: DashboardLayoutProps) => {
 
 const HeaderDropdown = () => {
     const setDropdownOpen = useSetAtom(DropdownOpenAtom)
+    const endpoint = useAtomValue(endPointAtom)
 
     return (
         <div className='absolute top-12 w-60 rounded-md bg-secondary-bg drop-shadow-md overflow-hidden'>
@@ -156,7 +157,9 @@ const HeaderDropdown = () => {
                 </div>
             </Link>
             <div
-                onClick={() => { }}
+                onClick={() => invoke('restart_service_command', { url: endpoint }).catch(e => {
+                    console.error(e)
+                })}
                 className='flex px-4 py-2 items-center gap-3 text-secondary-text cursor-pointer hover:text-primary-text transition-colors'
             >
                 <ArrowPathIcon

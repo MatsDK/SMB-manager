@@ -5,4 +5,6 @@ pub trait SmbApi {
     async fn set_conf(conf: String) -> String;
 
     async fn restart_service();
+
+    async fn get_service_status() -> String;
 }

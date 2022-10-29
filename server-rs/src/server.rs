@@ -6,6 +6,7 @@ use tarpc::{
 use service::SmbApi;
 use futures::stream::StreamExt;
 use std::{io::Write, fs, net::SocketAddr, process::Command};
+use sysinfo::{System, SystemExt};
 
 mod constants;
 use constants::SMB_CONF_PATH;
@@ -36,6 +37,16 @@ impl SmbApi for SmbApiServer {
         // let status = Command::new("ufw").args(["allow", "samba"]).status().unwrap();
         // println!("update ufw rules status: {:?}", status);
     }
+
+    async fn get_service_status(self, _: context::Context) -> String {
+        let s = System::new_all();
+        for process in s.processes_by_exact_name("smbd") {
+            println!("{:?}", process);
+        }
+
+        String::from("test")
+    }
+
 }
 
 #[tokio::main]
