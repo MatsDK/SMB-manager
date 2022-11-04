@@ -38,13 +38,13 @@ impl SmbApi for SmbApiServer {
         // println!("update ufw rules status: {:?}", status);
     }
 
-    async fn get_service_status(self, _: context::Context) -> String {
+    async fn get_service_status(self, _: context::Context) -> bool {
         let s = System::new_all();
-        for process in s.processes_by_exact_name("smbd") {
-            println!("{:?}", process);
+        for _ in s.processes_by_exact_name("smbd") {
+            return true;
         }
 
-        String::from("test")
+        false
     }
 
 }

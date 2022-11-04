@@ -6,5 +6,5 @@ pub trait SmbApi {
 
     async fn restart_service();
 
-    async fn get_service_status() -> String;
+    async fn get_service_status() -> bool;
 }

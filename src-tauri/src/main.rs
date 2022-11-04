@@ -14,17 +14,16 @@ mod service {
 
         async fn restart_service();
 
-        async fn get_service_status() -> String;
+        async fn get_service_status() -> bool;
     }
 }
 
 #[tauri::command]
 async fn get_conf_command(url: String) -> String {
-    let transport = tarpc::serde_transport::tcp::connect(url, Json::default);
+    let transport = tarpc::serde_transport::tcp::connect(url.clone(), Json::default);
 
     let client =
         service::SmbApiClient::new(client::Config::default(), transport.await.unwrap()).spawn();
-
     let response = client.get_conf(context::current()).await.unwrap();
 
     response
@@ -32,11 +31,7 @@ async fn get_conf_command(url: String) -> String {
 
 #[tauri::command]
 async fn set_conf_command(url: String, conf: String) -> String {
-    let transport = tarpc::serde_transport::tcp::connect(url.clone(), Json::default);
-
-    let client =
-        service::SmbApiClient::new(client::Config::default(), transport.await.unwrap()).spawn();
-
+    let client = get_client(url).await;
     let response = client.set_conf(context::current(), conf).await.unwrap();
 
     response
@@ -44,23 +39,23 @@ async fn set_conf_command(url: String, conf: String) -> String {
 
 #[tauri::command]
 async fn restart_service_command(url: String) {
-    let transport = tarpc::serde_transport::tcp::connect(url.clone(), Json::default);
-
-    let client =
-        service::SmbApiClient::new(client::Config::default(), transport.await.unwrap()).spawn();
-
+    let client = get_client(url).await;
     let _response = client.restart_service(context::current()).await.unwrap();
 }
 
 #[tauri::command]
-async fn get_service_status_command(url: String) {
+async fn get_service_status_command(url: String) -> bool {
+    println!("get service status {url}");
+    let client = get_client(url).await;
+    let response = client.get_service_status(context::current()).await.unwrap();
+
+    response
+}
+
+async fn get_client(url: String) -> service::SmbApiClient {
     let transport = tarpc::serde_transport::tcp::connect(url.clone(), Json::default);
 
-    let client =
-        service::SmbApiClient::new(client::Config::default(), transport.await.unwrap()).spawn();
-
-    let response = client.get_service_status(context::current()).await.unwrap();
-    println!("{response}");
+    service::SmbApiClient::new(client::Config::default(), transport.await.unwrap()).spawn()
 }
 
 fn main() {

@@ -26,22 +26,23 @@ export const DashboardView = () => {
                     // res = JSON.parse(res as string)
 
                     if (res) setConfig(res as any)
-                } catch (e) { }
+                } catch (e) {}
             }).catch(e => {
                 console.error(e)
             })
         }
     }, [router])
 
-    if (!endPoint) return (
-        <div className="h-screen w-screen flex justify-center items-center bg-primary-bg">
-            <div className="flex flex-col items-center">
-                <span className="text-xl font-semibold text-primary-text">No endpoint found</span>
-                <Link href="/" className="text-primary-text">Go back</Link>
+    if (!endPoint) {
+        return (
+            <div className='h-screen w-screen flex justify-center items-center bg-primary-bg'>
+                <div className='flex flex-col items-center'>
+                    <span className='text-xl font-semibold text-primary-text'>No endpoint found</span>
+                    <Link href='/' className='text-primary-text'>Go back</Link>
+                </div>
             </div>
-        </div>
-    )
-
+        )
+    }
 
     return (
         <DashboardLayout>
@@ -58,8 +59,8 @@ export const DashboardLayout = ({ children, ...props }: { children: ComponentChi
     const reloadPopupOpen = useAtomValue(ReloadPopupOpenAtom)
 
     return (
-        <div className='bg-primary-bg transition-colors h-screen overflow-hidden overflow-y-auto '>
-            <div className='max-w-5xl px-6 mx-auto flex flex-col relative'>
+        <div className='bg-primary-bg transition-colors h-screen overflow-hidden overflow-y-auto'>
+            <div className='max-w-5xl px-6 mx-auto flex flex-col relative h-screen'>
                 <DashboardHeader {...props} />
                 {children}
             </div>
@@ -157,9 +158,10 @@ const HeaderDropdown = () => {
                 </div>
             </Link>
             <div
-                onClick={() => invoke('restart_service_command', { url: endpoint }).catch(e => {
-                    console.error(e)
-                })}
+                onClick={() =>
+                    invoke('restart_service_command', { url: endpoint }).catch(e => {
+                        console.error(e)
+                    })}
                 className='flex px-4 py-2 items-center gap-3 text-secondary-text cursor-pointer hover:text-primary-text transition-colors'
             >
                 <ArrowPathIcon
@@ -188,6 +190,7 @@ const DashboardOverView = () => {
 
 const SmbSharesOverView = () => {
     const smbShares = useAtomValue(SmbSharesAtom)
+    const endpoint = useAtomValue(endPointAtom)
 
     return (
         <div className='mt-8'>
@@ -196,9 +199,11 @@ const SmbSharesOverView = () => {
                     Smb Shares
                     <span className='ml-2 text-secondary-text font-normal text-xl '>({smbShares.length})</span>
                 </h1>
-                <button className='text-center bg-primary-text text-primary-bg px-5 py-1 rounded-md hover:scale-[1.02] transition-transform'>
-                    New Share
-                </button>
+                <Link href={`/dashboard/new-share?e=${endpoint}`}>
+                    <button className='text-center bg-primary-text text-primary-bg px-5 py-1 rounded-md hover:scale-[1.02] transition-transform'>
+                        New Share
+                    </button>
+                </Link>
             </div>
             <div className='grid grid-cols-2 gap-5'>
                 {smbShares && smbShares.map(([name, params]) => <SmbShareCard name={name} params={params} />)}
@@ -210,7 +215,7 @@ const SmbSharesOverView = () => {
 const SmbShareCard = ({ name, params }: { name: string; params: Record<string, string> }) => {
     return (
         <Link href={`/dashboard/share/${name}`}>
-            <div className='bg-secondary-bg rounded-md px-5 py-2 shadow-md'>
+            <div className='bg-secondary-bg rounded-md px-5 py-2 shadow-md h-full'>
                 <h3 className='text-primary-text font-medium text-xl'>[{name}]</h3>
                 <div className='grid grid-cols-2 gap-2'>
                     {Object.entries(params).slice(0, 12).map(([name, value]) => {
