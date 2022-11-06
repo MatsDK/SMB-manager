@@ -20,10 +20,7 @@ mod service {
 
 #[tauri::command]
 async fn get_conf_command(url: String) -> String {
-    let transport = tarpc::serde_transport::tcp::connect(url.clone(), Json::default);
-
-    let client =
-        service::SmbApiClient::new(client::Config::default(), transport.await.unwrap()).spawn();
+    let client = get_client(url).await;
     let response = client.get_conf(context::current()).await.unwrap();
 
     response

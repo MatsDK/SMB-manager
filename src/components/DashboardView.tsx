@@ -1,4 +1,4 @@
-import { ArrowLeftOnRectangleIcon, ArrowPathIcon } from '@heroicons/react/24/outline'
+import { ArrowDownTrayIcon, ArrowLeftOnRectangleIcon, ArrowPathIcon } from '@heroicons/react/24/outline'
 import { invoke } from '@tauri-apps/api/tauri'
 import ini from 'ini'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
@@ -169,6 +169,24 @@ const HeaderDropdown = () => {
                     className='cursor-pointer'
                 />
                 Restart Service
+            </div>
+            <div
+                onClick={() => {
+                    invoke('get_conf_command', { url: endpoint }).then(res => {
+                        try {
+                            navigator.clipboard.writeText(res as string)
+                        } catch (e) {}
+                    }).catch(e => {
+                        console.error(e)
+                    })
+                }}
+                className='flex px-4 py-2 items-center gap-3 text-secondary-text cursor-pointer hover:text-primary-text transition-colors'
+            >
+                <ArrowDownTrayIcon
+                    width={20}
+                    className='cursor-pointer'
+                />
+                Copy Raw Config
             </div>
         </div>
     )

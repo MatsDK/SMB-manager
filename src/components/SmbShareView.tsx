@@ -63,6 +63,30 @@ export const SmbShareView = ({}) => {
         })
     }
 
+    const deleteShare = () => {
+        if (!route?.matches?.name) return
+        const name = route.matches.name
+
+        const newConfig = {
+            ...config,
+        } as ConfigType
+        delete newConfig![name]
+
+        invoke('set_conf_command', { conf: buildConfig(newConfig), url: endpoint }).then((res) => {
+            try {
+                res = ini.parse(res as string)
+
+                if (res) {
+                    setConfig(res as ConfigType)
+                    setReloadPopupOpen(true)
+                    window.location.href = `/dashboard?e=${endpoint}`
+                }
+            } catch (e) {}
+        }).catch(e => {
+            console.error(e)
+        })
+    }
+
     return (
         <DashboardLayout pageTitle={`[${route?.matches?.name}]`}>
             {hasChanged && (
@@ -72,19 +96,29 @@ export const SmbShareView = ({}) => {
                 />
             )}
             {currShare && (
-                ShareParamKeys.map((paramName) => {
-                    if (!paramName) return
-                    const value = currShare[paramName]
+                <div>
+                    <div className='flex justify-end'>
+                        <button
+                            className='text-center p-1 bg-primary-text text-primary-bg mt-5 rounded-md hover:scale-[1.02] transition-transform px-5'
+                            onClick={deleteShare}
+                        >
+                            Delete
+                        </button>
+                    </div>
+                    {ShareParamKeys.map((paramName) => {
+                        if (!paramName) return
+                        const value = currShare[paramName]
 
-                    return (
-                        <ConfigParam
-                            key={paramName}
-                            name={paramName as ShareParamKeys}
-                            value={value}
-                            onChange={(newVal) => setEditedFields(fields => ({ ...fields, [paramName]: newVal }))}
-                        />
-                    )
-                })
+                        return (
+                            <ConfigParam
+                                key={paramName}
+                                name={paramName as ShareParamKeys}
+                                value={value}
+                                onChange={(newVal) => setEditedFields(fields => ({ ...fields, [paramName]: newVal }))}
+                            />
+                        )
+                    })}
+                </div>
             )}
         </DashboardLayout>
     )
