@@ -1,7 +1,8 @@
 import { atom, useAtom, useAtomValue } from 'jotai'
 import { Link } from 'preact-router'
 import { useCallback } from 'preact/hooks'
-import { ThemeSwitcher } from './ThemeSwitcher'
+import { Button } from '../ui/Button'
+import { ThemeSwitcher } from '../ui/ThemeSwitcher'
 
 export const HomeView = () => {
     return (
@@ -60,11 +61,9 @@ const ConnectToServerForm = () => {
                             placeholder='0.0.0.0:3000'
                         />
                     </div>
-                    <button type='submit' className='w-full'>
-                        <p className='text-center p-1 bg-primary-text text-primary-bg w-full mt-5 rounded-md hover:scale-[1.02] transition-transform'>
-                            Connect
-                        </p>
-                    </button>
+                    <Button typeSubmit className='w-full mt-5'>
+                        Connect
+                    </Button>
                 </form>
                 <div onClick={scrollToRecentConnections} className='text-center text-secondary-text cursor-pointer'>
                     Recent connections
@@ -101,9 +100,9 @@ const RecentConnections = () => {
                     >
                         {name}
                         <Link href={`/dashboard?e=${name}`} onClick={() => saveRecentConnections(name)}>
-                            <p className='text-center p-1 bg-primary-text text-primary-bg rounded-md hover:scale-[1.02] transition-transform px-10'>
+                            <Button>
                                 Connect
-                            </p>
+                            </Button>
                         </Link>
                     </li>
                 ))}

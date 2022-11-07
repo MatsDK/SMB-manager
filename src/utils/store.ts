@@ -1,6 +1,8 @@
 import { atom } from 'jotai'
 import { compareFields } from './compareFields'
 
+const RESERVED_CONFIG_FIELDS = ['global', 'printers']
+
 export type GlobalConfigType = Record<string, string>
 export type ConfigType =
     | {
@@ -15,7 +17,7 @@ export const SmbSharesAtom = atom((get) => {
     const conf = get(configAtom)
 
     return Object.entries(conf || {})
-        .filter(([name]) => !['global', 'printers'].includes(name)) as SmbSharesType
+        .filter(([name]) => !RESERVED_CONFIG_FIELDS.includes(name)) as SmbSharesType
 })
 
 export const changedGlobalFields = atom({} as GlobalConfigType)

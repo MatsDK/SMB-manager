@@ -1,6 +1,7 @@
 import { invoke } from '@tauri-apps/api/tauri'
 import ini from 'ini'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { Button } from '../ui/Button'
 import { buildConfig } from '../utils/buildConfigFile'
 import { configAtom, ConfigType, ReloadPopupOpenAtom } from '../utils/store'
 import { DashboardLayout, endPointAtom } from './DashboardView'
@@ -63,11 +64,9 @@ export const NewShareView = () => {
                             />
                         </div>
 
-                        <button type='submit' className='w-full'>
-                            <p className='text-center p-1 bg-primary-text text-primary-bg w-full mt-5 rounded-md hover:scale-[1.02] transition-transform'>
-                                Create new share
-                            </p>
-                        </button>
+                        <Button typeSubmit className='w-full mt-5'>
+                            Create new share
+                        </Button>
                     </form>
                 </div>
             </div>

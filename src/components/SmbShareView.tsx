@@ -5,6 +5,7 @@ import PreactMarkdown from 'preact-markdown'
 import { useRouter } from 'preact-router'
 import { useEffect, useState } from 'preact/hooks'
 import { sharedParams } from '../../get-docs/parsedConfParams.json'
+import { Button } from '../ui/Button'
 import { buildConfig } from '../utils/buildConfigFile'
 import { compareFields } from '../utils/compareFields'
 import { configAtom, ConfigType, ReloadPopupOpenAtom, SmbSharesAtom } from '../utils/store'
@@ -98,12 +99,12 @@ export const SmbShareView = ({}) => {
             {currShare && (
                 <div>
                     <div className='flex justify-end'>
-                        <button
-                            className='text-center p-1 bg-primary-text text-primary-bg mt-5 rounded-md hover:scale-[1.02] transition-transform px-5'
+                        <Button
                             onClick={deleteShare}
+                            className='w-fit px-5'
                         >
                             Delete
-                        </button>
+                        </Button>
                     </div>
                     {ShareParamKeys.map((paramName) => {
                         if (!paramName) return
