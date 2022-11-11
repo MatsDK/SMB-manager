@@ -5,6 +5,7 @@ import { h, Ref } from 'preact'
 import { Link } from 'preact-router'
 import { useClickOutisde } from '../hooks/useClickOutside'
 import { ThemeSwitcher } from '../ui/ThemeSwitcher'
+import { invokeCommand } from '../utils/invokeCommand'
 import { DashboardLayoutProps, endPointAtom } from './DashboardView'
 
 const DropdownOpenAtom = atom(false)
@@ -59,10 +60,7 @@ const HeaderDropdown = () => {
                 </div>
             </Link>
             <div
-                onClick={() =>
-                    invoke('restart_service_command', { url: endpoint }).catch(e => {
-                        console.error(e)
-                    })}
+                onClick={() => invokeCommand('restart_service', { url: endpoint })}
                 className='flex px-4 py-2 items-center gap-3 text-secondary-text cursor-pointer hover:text-primary-text transition-colors'
             >
                 <ArrowPathIcon
@@ -73,12 +71,10 @@ const HeaderDropdown = () => {
             </div>
             <div
                 onClick={() => {
-                    invoke('get_conf_command', { url: endpoint }).then(res => {
+                    invokeCommand('get_conf', { url: endpoint }).then(res => {
                         try {
                             navigator.clipboard.writeText(res as string)
                         } catch (e) {}
-                    }).catch(e => {
-                        console.error(e)
                     })
                 }}
                 className='flex px-4 py-2 items-center gap-3 text-secondary-text cursor-pointer hover:text-primary-text transition-colors'

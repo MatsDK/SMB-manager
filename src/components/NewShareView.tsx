@@ -1,8 +1,8 @@
-import { invoke } from '@tauri-apps/api/tauri'
 import ini from 'ini'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { Button } from '../ui/Button'
 import { buildConfig } from '../utils/buildConfigFile'
+import { invokeCommand } from '../utils/invokeCommand'
 import { configAtom, ConfigType, ReloadPopupOpenAtom } from '../utils/store'
 import { DashboardLayout, endPointAtom } from './DashboardView'
 
@@ -26,17 +26,19 @@ export const NewShareView = () => {
             },
         } as ConfigType
 
-        invoke('set_conf_command', { conf: buildConfig(newConfig), url: endpoint }).then((res) => {
-            try {
-                res = ini.parse(res as string)
+        invokeCommand('set_conf', { url: endpoint, conf: buildConfig(newConfig) }).then(res => {
+            if (!res) return
 
-                if (res) {
-                    setConfig(res as ConfigType)
+            try {
+                const parsedConf = ini.parse(res) as ConfigType
+
+                if (parsedConf) {
+                    setConfig(parsedConf)
                     setReloadPopupOpen(true)
                 }
-            } catch (e) {}
-        }).catch(e => {
-            console.error(e)
+            } catch (e) {
+                console.error('Eror while parsing config', e)
+            }
         })
     }
 

@@ -5,7 +5,8 @@ import { ComponentChildren, h } from 'preact'
 import { Link, useRouter } from 'preact-router'
 import { useEffect } from 'preact/hooks'
 import { Button, ButtonInverted } from '../ui/Button'
-import { configAtom, ReloadPopupOpenAtom, SmbSharesAtom } from '../utils/store'
+import { invokeCommand } from '../utils/invokeCommand'
+import { configAtom, ConfigType, ReloadPopupOpenAtom, SmbSharesAtom } from '../utils/store'
 import { DashboardHeader } from './DashboardHeader'
 
 export const endPointAtom = atom('')
@@ -19,15 +20,16 @@ export const DashboardView = () => {
         if (router.matches?.e) {
             setConfig(null)
             setEndPoint(router.matches.e)
-            invoke('get_conf_command', { url: router.matches.e }).then(res => {
-                try {
-                    res = ini.parse(res as string)
-                    // res = JSON.parse(res as string)
+            invokeCommand('get_conf', { url: router.matches.e }).then(res => {
+                if (!res) return
 
-                    if (res) setConfig(res as any)
-                } catch (e) {}
-            }).catch(e => {
-                console.error(e)
+                try {
+                    const parsedConf = ini.parse(res) as ConfigType
+
+                    if (parsedConf) setConfig(parsedConf)
+                } catch (e) {
+                    console.error('Error while parsing config', e)
+                }
             })
         }
     }, [router])
@@ -73,10 +75,8 @@ const ReloadServicePopup = () => {
     const endpoint = useAtomValue(endPointAtom)
 
     const restart = () => {
-        invoke('restart_service_command', { url: endpoint }).then(() => {
+        invokeCommand('restart_service', { url: endpoint }).then(() => {
             setReloadPopupOpen(false)
-        }).catch(e => {
-            console.error(e)
         })
     }
 

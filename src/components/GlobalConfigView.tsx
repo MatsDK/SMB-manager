@@ -4,6 +4,7 @@ import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import PreactMarkdown from 'preact-markdown'
 import { globalParams } from '../../get-docs/parsedConfParams.json'
 import { buildConfig } from '../utils/buildConfigFile'
+import { invokeCommand } from '../utils/invokeCommand'
 import {
     changedGlobalFields,
     configAtom,
@@ -41,18 +42,20 @@ export const GlobalConfigView = () => {
             },
         }
 
-        invoke('set_conf_command', { conf: buildConfig(newConfig), url: endpoint }).then(res => {
-            try {
-                res = ini.parse(res as string)
+        invokeCommand('set_conf', { url: endpoint, conf: buildConfig(newConfig) }).then(res => {
+            if (!res) return
 
-                if (res) {
-                    setConfig(res as ConfigType)
+            try {
+                const parsedConf = ini.parse(res) as ConfigType
+
+                if (parsedConf) {
+                    setConfig(parsedConf)
                     setGlobalConfig(() => ({}))
                     setReloadPopupOpen(true)
                 }
-            } catch {}
-        }).catch(e => {
-            console.error(e)
+            } catch (e) {
+                console.error('Error while parsing config', e)
+            }
         })
     }
 

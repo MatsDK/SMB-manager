@@ -19,7 +19,7 @@ mod service {
 }
 
 #[tauri::command]
-async fn get_conf_command(url: String) -> String {
+async fn get_conf(url: String) -> String {
     let client = get_client(url).await;
     let response = client.get_conf(context::current()).await.unwrap();
 
@@ -27,7 +27,7 @@ async fn get_conf_command(url: String) -> String {
 }
 
 #[tauri::command]
-async fn set_conf_command(url: String, conf: String) -> String {
+async fn set_conf(url: String, conf: String) -> String {
     let client = get_client(url).await;
     let response = client.set_conf(context::current(), conf).await.unwrap();
 
@@ -35,13 +35,13 @@ async fn set_conf_command(url: String, conf: String) -> String {
 }
 
 #[tauri::command]
-async fn restart_service_command(url: String) {
+async fn restart_service(url: String) {
     let client = get_client(url).await;
     let _response = client.restart_service(context::current()).await.unwrap();
 }
 
 #[tauri::command]
-async fn get_service_status_command(url: String) -> bool {
+async fn get_service_status(url: String) -> bool {
     println!("get service status {url}");
     let client = get_client(url).await;
     let response = client.get_service_status(context::current()).await.unwrap();
@@ -58,10 +58,10 @@ async fn get_client(url: String) -> service::SmbApiClient {
 fn main() {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
-            get_conf_command,
-            set_conf_command,
-            restart_service_command,
-            get_service_status_command
+            get_conf,
+            set_conf,
+            restart_service,
+            get_service_status
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
