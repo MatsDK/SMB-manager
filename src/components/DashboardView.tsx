@@ -124,7 +124,7 @@ const SmbSharesOverView = () => {
 
     return (
         <div className='mt-8'>
-            <div className='flex justify-between items-center'>
+            <div className='flex justify-between items-center mb-5'>
                 <h1 className='font-semibold text-[30px] text-primary-text'>
                     Smb Shares
                     <span className='ml-2 text-secondary-text font-normal text-xl '>({smbShares.length})</span>

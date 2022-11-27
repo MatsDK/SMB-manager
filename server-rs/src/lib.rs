@@ -1,6 +1,11 @@
+#[derive(Debug)]
+struct Msg {
+    test: u8
+}
+
 #[tarpc::service]
 pub trait SmbApi {
-    async fn get_conf() -> String;
+    async fn get_conf(msg: Msg) -> String;
 
     async fn set_conf(conf: String) -> String;
 

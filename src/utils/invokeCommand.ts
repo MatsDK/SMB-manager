@@ -6,6 +6,7 @@ type Commands = {
     'set_conf': { input: URLInput & { conf: string }; output: string }
     'restart_service': { input: URLInput; output: never }
     'get_service_status': { input: URLInput; output: boolean }
+    'connect_share': { input: { drive: string; endpoint: string }; output: never }
 }
 
 export const invokeCommand = async <

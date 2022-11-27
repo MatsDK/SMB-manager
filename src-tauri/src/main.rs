@@ -3,6 +3,7 @@
     windows_subsystem = "windows"
 )]
 
+use std::process::Command;
 use tarpc::{client, context, tokio_serde::formats::Json};
 
 mod service {
@@ -49,6 +50,23 @@ async fn get_service_status(url: String) -> bool {
     response
 }
 
+#[tauri::command]
+async fn connect_share(drive: String, endpoint: String) {
+    let out = Command::new("net")
+        .args(["use", &format!("{drive}:"), &endpoint])
+        .output()
+        .expect("failed to mount drive");
+
+    println!("{:?}", out);
+
+    let out = Command::new("explorer")
+        .args([&format!("{drive}:")])
+        .output()
+        .expect("failed to open explorer");
+
+    println!("{:?}", out);
+}
+
 async fn get_client(url: String) -> service::SmbApiClient {
     let transport = tarpc::serde_transport::tcp::connect(url.clone(), Json::default);
 
@@ -61,7 +79,8 @@ fn main() {
             get_conf,
             set_conf,
             restart_service,
-            get_service_status
+            get_service_status,
+            connect_share
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
